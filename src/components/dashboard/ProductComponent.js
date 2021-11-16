@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../layout/LayoutComponent';
+import Layout from '../layout/dashboard/LayoutComponent';
 
 function Content(){
     return(
@@ -9,7 +9,7 @@ function Content(){
 
 function Product() {
     return (
-        <Layout children={<Content/>}/>
+        <Content/>
     );
 }
 

@@ -9,7 +9,6 @@ import {
     VStack,
     Icon,
     useColorModeValue,
-    Link,
     Drawer,
     DrawerContent,
     Text,
@@ -32,106 +31,9 @@ import {
     FaBell,
     FaChevronDown,
 } from 'react-icons/fa';
-import logo from '../../images/logo_large.png';
+import logo from '../../../images/logo_large.png';
 
 import { useNavigate } from 'react-router-dom';
-
-const LinkItems = [
-    { name: 'Inicio', icon: FaHome, ref: '/dashboard' },
-    { name: 'Usuarios', icon: FaUserFriends, ref: '/dashboard/users' },
-    { name: 'Productos', icon: FaBoxOpen, ref: '/dashboard/products' },
-];
-
-export default function Layout({children}){
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    
-    const navigate = useNavigate();
-
-    return (
-        <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-            <SidebarContent
-                onClose={() => onClose}
-                display={{ base: 'none', md: 'block' }}
-            />
-            <Drawer
-                autoFocus={false}
-                isOpen={isOpen}
-                placement="left"
-                onClose={onClose}
-                returnFocusOnClose={false}
-                onOverlayClick={onClose}
-                size="full">
-                <DrawerContent>
-                    <SidebarContent onClose={onClose} />
-                </DrawerContent>
-            </Drawer>
-            {/* mobilenav */}
-            <MobileNav onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }} p="4">
-                {children}
-            </Box>
-        </Box>
-    );
-}
-
-const SidebarContent = ({ onClose, ...rest }) => {
-    return (
-        <Box
-            transition="3s ease"
-            bg={useColorModeValue('white', 'gray.900')}
-            borderRight="1px"
-            borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-            w={{ base: 'full', md: 60 }}
-            pos="fixed"
-            h="full"
-            {...rest}>
-            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-                <Image
-                    width="200px"
-                    src={logo}
-                    alt="Inicia Sesión"
-                />
-                <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-            </Flex>
-            {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon} name={link.name} toRef={link.ref}>
-                </NavItem>
-            ))}
-        </Box>
-    );
-};
-
-
-const NavItem = ({ icon, name, toRef, ...rest }) => {
-    return (
-        <Link href={toRef} style={{ textDecoration: 'none' }} >
-            <Flex
-                align="center"
-                p="4"
-                mx="4"
-                borderRadius="lg"
-                role="group"
-                cursor="pointer"
-                _hover={{
-                    bg: 'cyan.400',
-                    color: 'white',
-                }}
-                {...rest}>
-                {icon && (
-                    <Icon
-                        mr="4"
-                        fontSize="16"
-                        _groupHover={{
-                            color: 'white',
-                        }}
-                        as={icon}
-                    />
-                )}
-                {name}
-            </Flex>
-        </Link>
-    );
-};
 
 const MobileNav = ({ onOpen, ...rest }) => {
     return (
@@ -210,3 +112,4 @@ const MobileNav = ({ onOpen, ...rest }) => {
         </Flex>
     );
 };
+export default MobileNav;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import UserService from "../../services/UserService";
-import Layout from '../layout/LayoutComponent';
+import Layout from '../layout/dashboard/LayoutComponent';
 import {
     Button,
     Lorem,
@@ -303,7 +303,7 @@ function Content() {
 
 function User() {
     return (
-        <Layout children={<Content />} />
+        <Content />
     );
 }
 
