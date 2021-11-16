@@ -9,8 +9,10 @@ class UserService {
     static urlRecovery = SERVIDOR + '/users/recovery';
 
     static login = (data) => {
-        if (data.email == "Ale@gmail" && data.password == "1234"){
-            return true;
+        if (data.email == "ale@gmail.com" && data.password == "1234"){
+            return {
+                status:200
+            };
         }
         return false;
     }
@@ -48,14 +50,14 @@ class UserService {
         return axios.delete(this.urlUser + " / " + userId);
     }
 
-    static login = (data) => {
-        let sendData = {
-            username: data.username,
-            password: data.password
-        };
+    // static login = (data) => {
+    //     let sendData = {
+    //         username: data.username,
+    //         password: data.password
+    //     };
 
-        return axios.post(this.urlLogin, sendData);
-    }
+    //     return axios.post(this.urlLogin, sendData);
+    // }
 
     static list = () => {
         return axios.get(this.urlUser);
