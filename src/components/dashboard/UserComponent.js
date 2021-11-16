@@ -34,13 +34,18 @@ import {
     InputGroup
 } from '@chakra-ui/react';
 import {FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch} from 'react-icons/fa';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
-
+const columns = [
+    {label: "Username", value:"username"},
+    {label: "Nombre", value:"name"},
+    {label: "Apellido", value:"lastname"},
+    {label: "Correo", value:"email"},
+    {label: "Rol", value:"role"}
+]
 
 function FormControlItems({ title, name, placeholder, errors, register }) {
-
-
     return (
         <FormControl isInvalid={errors.name}>
             <FormLabel htmlFor={name}>{title}</FormLabel>
@@ -183,8 +188,8 @@ function Search() {
     const handleClick = () => setShow(!show)
   
     return (
-      <InputGroup size="md" bg="white" width="250px">
-        <Input
+      <InputGroup size="md" width="250px">
+        <Input bg="white"
           pr="4.5rem"
           type={show ? "text" : "password"}
           placeholder="Buscar.."
@@ -201,6 +206,11 @@ function Content() {
 
     const [listUser, setListUser] = useState({ data: [], loading: false });
     const [updateData, setUpdateData] = useState(0);
+    const [selectedColumns, setSelectedColumns] = useState([]);
+
+    useEffect(() => {
+        setSelectedColumns([{ label: "Todos", value: "*" }, ...columns]);
+    }, []);
     const hola = () => {
         console.log("Holi")
     }
@@ -224,11 +234,45 @@ function Content() {
 
     }, [updateData]);
 
+    function getDropdownButtonLabel({ placeholderButtonLabel, value }) {
+         return `${placeholderButtonLabel}`;
+      }
+    
+      function onChange(value, event) {
+        if (event.action === "select-option" && event.option.value === "*") {
+          this.setState(this.options);
+        } else if (
+          event.action === "deselect-option" &&
+          event.option.value === "*"
+        ) {
+          this.setState([]);
+        } else if (event.action === "deselect-option") {
+          this.setState(value.filter((o) => o.value !== "*"));
+        } else if (value.length === this.options.length - 1) {
+          this.setState(this.options);
+        } else {
+          this.setState(value);
+        }
+      }
+
     return (
         <div>
             <h2>Users</h2>
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red"/> <Search/>
+                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red"/>
+                <Flex alignContent="center" justifyContent="end">
+                    <ReactMultiSelectCheckboxes width="250px" 
+                        style="height: 40px;"
+                        options={[{ label: "Todas", value: "*" }, ...columns]}
+                        placeholderButtonLabel="Columnas"
+                        getDropdownButtonLabel={getDropdownButtonLabel}
+                        value={selectedColumns}
+                        onChange={onChange}
+                        setState={setSelectedColumns}
+                        hideSearch={true}
+                    />
+                    <Search/>
+                </Flex>
             </Flex>
             <br/>
             
@@ -237,41 +281,22 @@ function Content() {
                 <Table variant="simple" bg="white">
                     <Thead>
                         <Tr>
-                            <Th>
-                                <Stack direction={["column", "row"]} spacing="0px">
-                                    <Text mr={2}>Username</Text>
-                                    <button onClick={hola}><FaArrowDown/></button>
-                                    <button onClick={hola}><FaArrowUp/></button>
-                                </Stack>
-                            </Th>
-                            <Th>
-                                <Stack direction={["column", "row"]} spacing="0px">
-                                    <Text mr={2}>Nombre</Text>
-                                    <button onClick={hola}><FaArrowDown/></button>
-                                    <button onClick={hola}><FaArrowUp/></button>
-                                </Stack>
-                            </Th>
-                            <Th>
-                                <Stack direction={["column", "row"]} spacing="0px">
-                                    <Text mr={2}>Apellido</Text>
-                                    <button onClick={hola}><FaArrowDown/></button>
-                                    <button onClick={hola}><FaArrowUp/></button>
-                                </Stack>
-                            </Th>
-                            <Th>
-                                <Stack direction={["column", "row"]} spacing="0px">
-                                    <Text mr={2}>Correo</Text>
-                                    <button onClick={hola}><FaArrowDown/></button>
-                                    <button onClick={hola}><FaArrowUp/></button>
-                                </Stack>
-                            </Th>
-                            <Th>
-                                <Stack direction={["column", "row"]} spacing="0px">
-                                    <Text mr={2}>Rol</Text>
-                                    <button onClick={hola}><FaArrowDown/></button>
-                                    <button onClick={hola}><FaArrowUp/></button>
-                                </Stack>
-                            </Th>
+                            {selectedColumns.map(col => {
+                                return (
+                                    <>{
+                                        col.value !== "*" ?
+                                        <Th>
+                                            <Stack direction={["column", "row"]} spacing="0px">
+                                                <Text mr={2}>{col.label}</Text>
+                                                <button onClick={hola}><FaArrowDown/></button>
+                                                <button onClick={hola}><FaArrowUp/></button>
+                                            </Stack>
+                                        </Th>
+                                        : ''
+                                    }
+                                    </>
+                                );
+                            })}
                             <Th>Acciones</Th>
                         </Tr>
                     </Thead>
@@ -279,14 +304,27 @@ function Content() {
                         {listUser.data.map((user) => {
                             return (
                                 <Tr>
-                                    <Td>{user.username}</Td>
-                                    <Td>{user.name}</Td>
-                                    <Td>{user.lastname}</Td>
-                                    <Td>{user.email}</Td>
-                                    <Td>{user.role == '1' ?
-                                            <Badge colorScheme="green">Administrador</Badge> :
-                                            <Badge colorScheme="purple">Usuario</Badge>
-                                    }</Td>
+                                    
+                            {selectedColumns.map(col => {
+                                return (
+                                    <>{
+                                        col.value !== "*" ?
+                                        (
+                                            col.value === "role"
+                                            ?
+                                            <Td>{user.role == '1' ?
+                                                <Badge colorScheme="green">Administrador</Badge> :
+                                                <Badge colorScheme="purple">Usuario</Badge>
+                                            }</Td>
+                                            :
+                                            <Td>{user[col.value]}</Td>
+                                        )
+                                        :
+                                        ''
+                                    }
+                                    </>
+                                    )})}
+                                    
                                     <Td>
                                         <Button size="sm" p={0} m={0.5} ><CreateUserModal nameButton={<FaEdit/>} color="blue" size="sm" title="Editar Usuario" user={user}/></Button>
                                         <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash/></Button>
