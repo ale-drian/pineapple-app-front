@@ -2,47 +2,18 @@ import React, { useEffect, useRef, useState } from 'react'
 import UserService from "../../services/UserService";
 import Layout from '../layout/dashboard/LayoutComponent';
 import {
-    Button,
-    Lorem,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    FormErrorMessage,
-    FormLabel,
-    FormControl,
-    Input,
-    SimpleGrid,
-    Box,
-    Select,
-    Table,
-    Th,
-    Tr,
-    Td,
-    Tfoot,
-    Thead,
-    Tbody,
-    Badge,
-    Stack,
-    Flex,
-    Text,
-    InputRightElement,
-    InputGroup
+    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup
 } from '@chakra-ui/react';
-import {FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch} from 'react-icons/fa';
+import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const columns = [
-    {label: "Username", value:"username"},
-    {label: "Nombre", value:"name"},
-    {label: "Apellido", value:"lastname"},
-    {label: "Correo", value:"email"},
-    {label: "Rol", value:"role"}
+    { label: "Username", value: "username" },
+    { label: "Nombre", value: "name" },
+    { label: "Apellido", value: "lastname" },
+    { label: "Correo", value: "email" },
+    { label: "Rol", value: "role" }
 ]
 
 function FormControlItems({ title, name, placeholder, errors, register }) {
@@ -64,7 +35,7 @@ function FormControlItems({ title, name, placeholder, errors, register }) {
     );
 }
 
-const CreateUserModal = ({user, title, nameButton, color, size}) => {
+const CreateUserModal = ({ user, title, nameButton, color, size }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         handleSubmit,
@@ -95,7 +66,7 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
                                 <Box>
                                     <FormControl isInvalid={errors.username} isRequired mb={3}>
                                         <FormLabel htmlFor="username" >Username</FormLabel>
-                                        <Input id="username" placeholder="Ingrese un nombre para el usuario" value={user?user.username:""}
+                                        <Input id="username" placeholder="Ingrese un nombre para el usuario" value={user ? user.username : ""}
                                             {...register("username", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
@@ -105,7 +76,7 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.email} isRequired mb={3}>
                                         <FormLabel htmlFor="email" >Correo electrónico</FormLabel>
-                                        <Input id="email" placeholder="Ingrese un coreeo electronico" value={user?user.email:""}
+                                        <Input id="email" placeholder="Ingrese un coreeo electronico" value={user ? user.email : ""}
                                             {...register("email", {
                                                 required: "Este campo es obligatorio",
                                                 pattern: {
@@ -134,7 +105,7 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
                                 <Box>
                                     <FormControl isInvalid={errors.name} isRequired mb={3}>
                                         <FormLabel htmlFor="name" >Nombre</FormLabel>
-                                        <Input id="name" placeholder="Ingrese un nombre" value={user?user.name:""}
+                                        <Input id="name" placeholder="Ingrese un nombre" value={user ? user.name : ""}
                                             {...register("name", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
@@ -144,7 +115,7 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.lastname} isRequired mb={3}>
                                         <FormLabel htmlFor="lastname" >Apellido</FormLabel>
-                                        <Input id="lastname" placeholder="Ingrese un apellido" value={user?user.lastname:""}
+                                        <Input id="lastname" placeholder="Ingrese un apellido" value={user ? user.lastname : ""}
                                             {...register("lastname", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El apellido debe contener al menos 4 caracteres" }
@@ -154,7 +125,7 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.role} isRequired mb={3}>
                                         <FormLabel htmlFor="role" >Rol</FormLabel>
-                                        <Select placeholder="Seleccionar un rol" value={user?user.role:""}
+                                        <Select placeholder="Seleccionar un rol" value={user ? user.role : ""}
                                             {...register("role", {
                                                 required: "Selecciona una opcion valida",
                                             })}>
@@ -186,22 +157,22 @@ const CreateUserModal = ({user, title, nameButton, color, size}) => {
 function Search() {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
-  
+
     return (
-      <InputGroup size="md" width="250px">
-        <Input bg="white"
-          pr="4.5rem"
-          type={show ? "text" : "password"}
-          placeholder="Buscar.."
-        />
-        <InputRightElement width="4.5rem">
-          <Button h="1.75rem" size="sm" onClick={handleClick}>
-            <FaSearch />
-          </Button>
-        </InputRightElement>
-      </InputGroup>
+        <InputGroup size="md" width="250px">
+            <Input bg="white"
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                placeholder="Buscar.."
+            />
+            <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleClick}>
+                    <FaSearch />
+                </Button>
+            </InputRightElement>
+        </InputGroup>
     )
-  }
+}
 function Content() {
 
     const [listUser, setListUser] = useState({ data: [], loading: false });
@@ -235,33 +206,33 @@ function Content() {
     }, [updateData]);
 
     function getDropdownButtonLabel({ placeholderButtonLabel, value }) {
-         return `${placeholderButtonLabel}`;
-      }
-    
-      function onChange(value, event) {
+        return `${placeholderButtonLabel}`;
+    }
+
+    function onChange(value, event) {
         if (event.action === "select-option" && event.option.value === "*") {
-          this.setState(this.options);
+            this.setState(this.options);
         } else if (
-          event.action === "deselect-option" &&
-          event.option.value === "*"
+            event.action === "deselect-option" &&
+            event.option.value === "*"
         ) {
-          this.setState([]);
+            this.setState([]);
         } else if (event.action === "deselect-option") {
-          this.setState(value.filter((o) => o.value !== "*"));
+            this.setState(value.filter((o) => o.value !== "*"));
         } else if (value.length === this.options.length - 1) {
-          this.setState(this.options);
+            this.setState(this.options);
         } else {
-          this.setState(value);
+            this.setState(value);
         }
-      }
+    }
 
     return (
         <div>
             <h2>Users</h2>
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red"/>
+                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red" />
                 <Flex alignContent="center" justifyContent="end">
-                    <ReactMultiSelectCheckboxes width="250px" 
+                    <ReactMultiSelectCheckboxes width="250px"
                         style="height: 40px;"
                         options={[{ label: "Todas", value: "*" }, ...columns]}
                         placeholderButtonLabel="Columnas"
@@ -271,11 +242,11 @@ function Content() {
                         setState={setSelectedColumns}
                         hideSearch={true}
                     />
-                    <Search/>
+                    <Search />
                 </Flex>
             </Flex>
-            <br/>
-            
+            <br />
+
             <Box overflowX="auto">
 
                 <Table variant="simple" bg="white">
@@ -285,14 +256,14 @@ function Content() {
                                 return (
                                     <>{
                                         col.value !== "*" ?
-                                        <Th>
-                                            <Stack direction={["column", "row"]} spacing="0px">
-                                                <Text mr={2}>{col.label}</Text>
-                                                <button onClick={hola}><FaArrowDown/></button>
-                                                <button onClick={hola}><FaArrowUp/></button>
-                                            </Stack>
-                                        </Th>
-                                        : ''
+                                            <Th>
+                                                <Stack direction={["column", "row"]} spacing="0px">
+                                                    <Text mr={2}>{col.label}</Text>
+                                                    <button onClick={hola}><FaArrowDown /></button>
+                                                    <button onClick={hola}><FaArrowUp /></button>
+                                                </Stack>
+                                            </Th>
+                                            : ''
                                     }
                                     </>
                                 );
@@ -304,30 +275,31 @@ function Content() {
                         {listUser.data.map((user) => {
                             return (
                                 <Tr>
-                                    
-                            {selectedColumns.map(col => {
-                                return (
-                                    <>{
-                                        col.value !== "*" ?
-                                        (
-                                            col.value === "role"
-                                            ?
-                                            <Td>{user.role == '1' ?
-                                                <Badge colorScheme="green">Administrador</Badge> :
-                                                <Badge colorScheme="purple">Usuario</Badge>
-                                            }</Td>
-                                            :
-                                            <Td>{user[col.value]}</Td>
+
+                                    {selectedColumns.map(col => {
+                                        return (
+                                            <>{
+                                                col.value !== "*" ?
+                                                    (
+                                                        col.value === "role"
+                                                            ?
+                                                            <Td>{user.role == '1' ?
+                                                                <Badge colorScheme="green">Administrador</Badge> :
+                                                                <Badge colorScheme="purple">Usuario</Badge>
+                                                            }</Td>
+                                                            :
+                                                            <Td>{user[col.value]}</Td>
+                                                    )
+                                                    :
+                                                    ''
+                                            }
+                                            </>
                                         )
-                                        :
-                                        ''
-                                    }
-                                    </>
-                                    )})}
-                                    
+                                    })}
+
                                     <Td>
-                                        <Button size="sm" p={0} m={0.5} ><CreateUserModal nameButton={<FaEdit/>} color="blue" size="sm" title="Editar Usuario" user={user}/></Button>
-                                        <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash/></Button>
+                                        <Button size="sm" p={0} m={0.5} ><CreateUserModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Usuario" user={user} /></Button>
+                                        <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
                                     </Td>
                                 </Tr>
                             );
