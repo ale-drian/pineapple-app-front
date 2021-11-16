@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import Layout from '../layout/LayoutComponent';
+
+function Content(){
+    return(
+        <p>Dashboard</p>
+    );
+}
 
 function Dashboard() {
     return (
-        <div>
-            <p>Dashboard</p>
-        </div>
+        <Layout children={<Content/>}/>
     );
 }
 

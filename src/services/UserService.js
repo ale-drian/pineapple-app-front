@@ -7,7 +7,13 @@ class UserService {
     static urlUser = SERVIDOR + '/users';
     static urlChangePassword = SERVIDOR + '/users/changePassword';
     static urlRecovery = SERVIDOR + '/users/recovery';
-    static urlUser = SERVIDOR + '/users';
+
+    static login = (data) => {
+        if (data.email == "Ale@gmail" && data.password == "1234"){
+            return true;
+        }
+        return false;
+    }
 
     static create = (data) => {
 

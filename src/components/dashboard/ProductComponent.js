@@ -1,10 +1,15 @@
 import React from 'react';
+import Layout from '../layout/LayoutComponent';
+
+function Content(){
+    return(
+        <p>Product</p>
+    );
+}
 
 function Product() {
     return (
-        <div>
-            <p>Product</p>
-        </div>
+        <Layout children={<Content/>}/>
     );
 }
 

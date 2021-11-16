@@ -6,12 +6,16 @@ import {
   Routes,
   Link
 } from "react-router-dom";
+import React, {createContext, useContext } from 'react';
 import Login from './components/LoginComponent';
 import Home from './components/HomeComponent';
 import Dashboard from './components/dashboard/DashboardComponent';
 import Category from './components/dashboard/CategoryComponent';
 import Product from './components/dashboard/ProductComponent';
 import User from './components/dashboard/UserComponent';
+
+const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
 
 function App() {
   return (
