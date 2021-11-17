@@ -66,7 +66,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                 <Box>
                                     <FormControl isInvalid={errors.username} isRequired mb={3}>
                                         <FormLabel htmlFor="username" >Username</FormLabel>
-                                        <Input id="username" placeholder="Ingrese un nombre para el usuario" value={user ? user.username : ""}
+                                        <Input id="username" placeholder="Ingrese un nombre para el usuario" defaultValue={user ? user.username : ""}
                                             {...register("username", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
@@ -76,7 +76,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.email} isRequired mb={3}>
                                         <FormLabel htmlFor="email" >Correo electrónico</FormLabel>
-                                        <Input id="email" placeholder="Ingrese un coreeo electronico" value={user ? user.email : ""}
+                                        <Input id="email" placeholder="Ingrese un coreeo electronico" defaultValue={user ? user.email : ""}
                                             {...register("email", {
                                                 required: "Este campo es obligatorio",
                                                 pattern: {
@@ -105,7 +105,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                 <Box>
                                     <FormControl isInvalid={errors.name} isRequired mb={3}>
                                         <FormLabel htmlFor="name" >Nombre</FormLabel>
-                                        <Input id="name" placeholder="Ingrese un nombre" value={user ? user.name : ""}
+                                        <Input id="name" placeholder="Ingrese un nombre" defaultValue={user ? user.name : ""}
                                             {...register("name", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
@@ -115,7 +115,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.lastname} isRequired mb={3}>
                                         <FormLabel htmlFor="lastname" >Apellido</FormLabel>
-                                        <Input id="lastname" placeholder="Ingrese un apellido" value={user ? user.lastname : ""}
+                                        <Input id="lastname" placeholder="Ingrese un apellido" defaultValue={user ? user.lastname : ""}
                                             {...register("lastname", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El apellido debe contener al menos 4 caracteres" }
@@ -125,7 +125,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                     </FormControl>
                                     <FormControl isInvalid={errors.role} isRequired mb={3}>
                                         <FormLabel htmlFor="role" >Rol</FormLabel>
-                                        <Select placeholder="Seleccionar un rol" value={user ? user.role : ""}
+                                        <Select placeholder="Seleccionar un rol" defaultValue={user ? user.role : ""}
                                             {...register("role", {
                                                 required: "Selecciona una opcion valida",
                                             })}>
