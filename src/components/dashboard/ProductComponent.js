@@ -18,7 +18,7 @@ const columns = [
 ]
 
 
-const CreateUserModal = ({ prod, title, nameButton, color, size }) => {
+const CreateModal = ({ prod, title, nameButton, color, size }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
         
     const formatPrice = (val) => `$` + parseFloat(val).toFixed( 2 )
@@ -36,13 +36,17 @@ const CreateUserModal = ({ prod, title, nameButton, color, size }) => {
     function handleDisplayImage(event){
         setDisplayImage(URL.createObjectURL(event.target.files[0]))
     }
-    function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                resolve();
-            }, 3000);
-        });
+    function onSubmit(values, e) {
+        ProductService.create(values).then(result => {
+            if (result.status === 201) {
+              console.log("Pasó")
+            } else {
+              console.log("error status")
+            }
+          }).catch(error => {
+            console.log("error catch")
+          });
+          e.target.reset();
     }
     return (
         <div>
@@ -59,7 +63,7 @@ const CreateUserModal = ({ prod, title, nameButton, color, size }) => {
                                 <Box>
                                     <FormControl isInvalid={errors.id} isRequired mb={3}>
                                         <FormLabel htmlFor="id" >Codigo (todaia no esta)</FormLabel>
-                                        <Input id="id" placeholder="Ingrese un nombre para el usuario" defaultValue={prod ? prod.id : ""}
+                                        <Input id="id" placeholder="Ingrese un codigo para el producto" defaultValue={prod ? prod.id : ""}
                                             {...register("id", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El codigo debe contener al menos 4 caracteres" }
@@ -135,7 +139,7 @@ const CreateUserModal = ({ prod, title, nameButton, color, size }) => {
                                         />
                                         <FormErrorMessage>{errors.category && errors.category.message}</FormErrorMessage>
                                     </FormControl>
-                                    <FormControl isInvalid={errors.category} isRequired mb={3}>
+                                    <FormControl isInvalid={errors.category} mb={3}>
                                         <FormLabel htmlFor="category" >Imagen</FormLabel>
                                         <Input id="category" placeholder="Ingrese un nombre" type="file"
                                             onChange={handleDisplayImage}
@@ -241,9 +245,9 @@ function Content() {
 
     return (
         <div>
-            <h2>Users</h2>
+            <h2>Productos</h2>
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateUserModal nameButton="Crear Producto" title="Crear Producto" color="red" />
+                <CreateModal nameButton="Crear Producto" title="Crear Producto" color="red" />
                 <Flex alignContent="center" justifyContent="end">
                     <ReactMultiSelectCheckboxes width="250px"
                         style="height: 40px;"
@@ -315,7 +319,7 @@ function Content() {
 
                                     <Td>
                                         <Button size="sm" p={0} m={0.5} >
-                                            <CreateUserModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} />
+                                            <CreateModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} />
                                         </Button>
                                         <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
                                     </Td>

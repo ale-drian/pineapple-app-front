@@ -8,13 +8,15 @@ class ProductService {
     static create = (data) => {
 
         let sendData = {
-            username: data.username,
-            password: data.password,
-            email: data.email,
             name: data.name,
-            lastname: data.lastname,
-            role: data.role
+            category: data.category,
+            quantity: data.quantity,
+            unit_price: data.unit_price,
+            description: data.description,
+            url_image: "no_hay"
         };
+        console.log("data", data)
+        console.log("sendData", sendData)
         return axios.post(this.urlProduct, sendData);
     }
 
