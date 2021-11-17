@@ -1,5 +1,26 @@
-import { Button, Flex, Heading, Input, Image, Center, FormControl, InputRightElement, InputGroup, FormErrorMessage } from '@chakra-ui/react';
-import mySvg from '../bg-1.svg';
+import {
+  Box,
+  Flex,
+  Stack,
+  Heading,
+  Text,
+  Container,
+  Input,
+  Button,
+  SimpleGrid,
+  Avatar,
+  AvatarGroup,
+  useBreakpointValue,
+  IconProps,
+  Icon, Center, Image, FormControl, FormErrorMessage, InputGroup,InputRightElement
+} from '@chakra-ui/react';
+
+
+import mySvg from '../images/background.png';
+import svg2 from '../bg-login4.png';
+import logo from '../images/logo_large.png';
+import bgLogin from '../images/bg-login.svg';
+import bgLogin2 from '../images/bg-login2.svg';
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -43,88 +64,127 @@ function Login() {
     //   }
     // }).catch(error => {
     //   setIsError(true);
+    //ackgroundImage={`url(${mySvg})`}
     // });
     // e.target.reset(); //borra el contenido de los inputs
   }
 
   return (
-    <div
-      className="someClassName"
-      style={{
-        backgroundImage: `url(${mySvg})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed'
-      }}
-    >
+    
+ <Box position={'relative'} backgroundImage={`url(${mySvg})`} backgroundPosition="center"
+ backgroundSize="cover" backgroundRepeat="no-repeat" width="100vw" 
+ py={{ base: 0, sm: 0, md: 0, lg: 10 }}
+ px={{ base: 0, sm: 0,  md: 0, lg: 10 }}
+ height={{ base: "100vh", sm:  "100vh", md: "100vh",lg:  "100vh" }} >
+   
+ <Container
+   backgroundImage={`url(${svg2})`}
+   bgColor="white"
+   backgroundSize="cover" backgroundRepeat="no-repeat"
+   backgroundPosition='center'
+   as={SimpleGrid}
+   maxW={'5xl'}
+   height={{ base: "100vh", sm:  "100vh", md: "100vh",lg:  "80vh" }}
+   boxShadow="2xl" 
+   borderRadius="md"
+   columns={{ base: 1, md: 2 }}
+   spacing={{ base: 5, lg: 32 }}
+   py={{ base: 20, sm: 20, lg: 20 }}>
+     
+   <Stack spacing={{ base: 10, md: 20, lg:20 }}
+   pt={{ base: 10 , sm: '10px', md:0,lg:10}}>
+     <Center>
+              <Image
+                borderRadius="10"
+                boxSize="fit-content"
+                src="https://i.ibb.co/LxBSmKF/logo-large.png"
+                alt="Inicia Sesión"
+                ml={{ base: 0, sm: 0, md:0, lg: 50 }} 
+                mt={{ base: 0, sm: 0, md:100, lg: 50 }} 
+                maxWidth={{ base: "80vw", sm:"300px", lg:"400px" }}
+              />
+            </Center>
+     
+   </Stack>
+   <Stack
+     bg={'gray.50'}
+     rounded={'xl'}
+     boxShadow="2xl"
+     p={{ base: 4, sm: 6, md: 8 }}
+     mt={{ base: 0, sm: 0, lg: 0 }} 
+     spacing={{ base: 8 }}
+     display="inline-block"
+     maxW={{ lg: 'lg' }}>
+     <Stack spacing={4}>
+       <Heading
+         color={'gray.800'}
+         lineHeight={1.1}
+         fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
+         Bienvenid@
+         <Text
+           as={'span'}
+           bgGradient="linear(to-r, red.400,yellow.400)"
+           bgClip="text">
+           !
+         </Text>
+       </Heading>
+       <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
+         Ingrese los datos solicitados:
+       </Text>
+      
+     </Stack>
 
-      <Flex height="80vh" alignItems="center" justifyContent="center" m={20} >
-        <Flex bg="white" width="80%" backgroundImage="url(https://i.ibb.co/6Zy05DV/bg-2.png)"
-          boxShadow="2xl" p={20} rounded={6} backgroundSize='cover' backgroundPosition='center'>
-          <Flex direction="column" width="50vh" rounded={6} mt={10} ml={30}>
-            <Heading as="cite" mb={6} font="heading" color="#F2B705 " >Pineapple Supermarket</Heading>
-            <Center>
-              <Image
-                borderRadius="10"
-                width="100vh"
-                src="https://i.ibb.co/HD8Rkht/img.png"
-                alt="Inicia Sesión"
-                mb={6}
-              />
-            </Center>
-          </Flex>
-          <Flex direction="column" width="50vh" background="white" boxShadow="2xl" p={20} ml={40} rounded={6}>
-            <Heading mb={6}>Hola de Nuevo!</Heading>
-            <Center>
-              <Image
-                borderRadius="10"
-                boxSize="150px"
-                src="https://i.ibb.co/YbnBfjn/logo-rojo.png"
-                alt="Inicia Sesión"
-                mb={6}
-              />
-            </Center>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.email} isRequired mb={3}>
-                <Input colorScheme="yellow" placeholder="user@pineaple.com" variant="filled"
-                  {...register("email", {
-                    required: "Este campo es obligatorio",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Escriba un correo valido"
-                    }
-                  })}
-                />
-                <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={errors.password} isRequired mb={10}>
-                <InputGroup>
-                  <Input colorScheme="yellow" placeholder="*********" variant="filled"
+     <form onSubmit={handleSubmit(onSubmit)}>
+     <Stack spacing={4} >
+      <FormControl isInvalid={errors.email} isRequired  mt={1}> 
+       
+         <Input
+           placeholder="Correo"
+           bg={'gray.100'}
+           border={0}
+           color={'gray.500'}
+           _placeholder={{
+             color: 'gray.500',
+           }}
+           {...register("email", {
+            required: "Este campo es obligatorio",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Escriba un correo valido"
+            }
+          })}
+         />
+
+         <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+         </FormControl>
+        <FormControl isInvalid={errors.password} isRequired mb={10}>
+        <InputGroup>
+        <Input colorScheme="yellow" placeholder="*********" variant="filled"
                     type={show ? "text" : "password"}
                     {...register("password", {
                       required: "Este campo es obligatorio",
                     })}
                   />
-                  <InputRightElement width="4.5rem">
+        <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleClick}>
                       {show ? <FaEyeSlash /> : <FaEye />}
                     </Button>
-                  </InputRightElement>
-                </InputGroup>
-                <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+        </InputRightElement>
+        </InputGroup>
+              <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
               </FormControl>
 
               <Button isLoading={isSubmitting} width="100%" type="submit" py={5} borderRadius="full" bg="#F2B705" colorScheme="yellow">
-                Guardar
+                Login
               </Button>
-            </form>
-          </Flex>
-        </Flex>
-      </Flex>
-    </div>
+              </Stack>
+    </form>
+
+   </Stack>
+ </Container>
+</Box>
+
+
   );
 }
 
