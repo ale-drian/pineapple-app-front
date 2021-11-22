@@ -44,6 +44,7 @@ import {
 import { Outlet } from 'react-router';
 import Sidebar from './SidebarComponent';
 import MobileNav from './HeaderComponent';
+import { useAuthContext } from '../../../App';
 
 const LinkItems = [
     { name: 'Inicio', icon: FaHome, ref: '/dashboard/' },
@@ -52,6 +53,7 @@ const LinkItems = [
 ];
 
 export default function Layout(){
+    const {user} = useAuthContext();
     const { isOpen, onOpen, onClose } = useDisclosure();
     
     const navigate = useNavigate();
