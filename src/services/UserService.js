@@ -24,7 +24,7 @@ class UserService {
             password: data.password,
             email: data.email,
             name: data.name,
-            lastname: data.lastname,
+            lastName: data.lastName,
             role: {
                 id:data.role
             }
@@ -35,21 +35,23 @@ class UserService {
     static update = (data,userId) => {
 
         let sendData = {
-            id: data.userId,
             username: data.username,
+            ...(data.password && {password: data.password}),
             password: data.password,
             email: data.email,
             name: data.name,
-            lastname: data.lastname,
-            role: data.role
+            lastName: data.lastName,
+            role: {
+                id:data.role
+            }
         };
 
-        return axios.put(this.urlUser, sendData);
+        return axios.put(this.urlUser + "/" + userId, sendData);
     }
 
     static delete = (userId) => {
-
-        return axios.delete(this.urlUser + " / " + userId);
+        console.log("UServ", userId)
+        return axios.delete(this.urlUser + "/" + userId);
     }
 
 

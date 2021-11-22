@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import UserService from "../../services/UserService";
 import Layout from '../layout/dashboard/LayoutComponent';
 import {
-    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup
+    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, 
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
@@ -12,7 +18,7 @@ import { useAuthContext } from '../../App';
 const columns = [
     { label: "Username", value: "username" },
     { label: "Nombre", value: "name" },
-    { label: "Apellido", value: "lastname" },
+    { label: "Apellido", value: "lastName" },
     { label: "Correo", value: "email" },
     { label: "Rol", value: "role" }
 ]
@@ -36,7 +42,56 @@ function FormControlItems({ title, name, placeholder, errors, register }) {
     );
 }
 
-const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
+function ConfirmationDelete({userId}) {
+    const [isOpen, setIsOpen] = React.useState(false)
+    const onClose = () => setIsOpen(false)
+    const cancelRef = React.useRef()
+    const onDelete = () => {
+        UserService.delete(userId).then(result => {
+            if (result.status === 201) {
+              console.log("correct delete");
+            } else {
+            console.log("error_if")
+            }
+          }).catch(error => {
+              console.log("error_catch")
+          })
+    }
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)} colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
+  
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Eliminar Usuario
+              </AlertDialogHeader>
+  
+              <AlertDialogBody>
+                Estas seguro de eliminar a este usuario, toda la informacion relacionada a este usuario se eliminará.
+              </AlertDialogBody>
+  
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button colorScheme="red" onClick={onDelete} ml={3}>
+                  Eliminar
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+      </>
+    )
+  }
+
+const CreateUserModal = ({ user, title, nameButton, color, size, userId }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         handleSubmit,
@@ -45,7 +100,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
     } = useForm();
 
     function onSubmit(values) {
-        if(type == "create"){
+        if(userId == 0){
             UserService.create(values).then(result => {
                 if (result.status === 201) {
                   console.log("correct create");
@@ -55,10 +110,10 @@ const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
               }).catch(error => {
                 // setIsError(true);
               });
-        }else if(type == "update"){
-            UserService.create(values).then(result => {
-                if (result.status === 201) {
-                  console.log("correct create");
+        }else{
+            UserService.update(values, userId).then(result => {
+                if (result.status === 200) {
+                  console.log("correct update");
                 } else {
                 //   setIsError(true);
                 }
@@ -103,11 +158,11 @@ const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
                                         />
                                         <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                                     </FormControl>
-                                    <FormControl isInvalid={errors.password} isRequired mb={3}>
+                                    <FormControl isInvalid={errors.password} isRequired={user ? false:true} mb={3}>
                                         <FormLabel htmlFor="password" >Contraseña</FormLabel>
                                         <Input id="password" placeholder="Ingrese una contraseña" type="password"
                                             {...register("password", {
-                                                required: "Este campo es obligatorio",
+                                                ...(!user && {required: "Este campo es obligatorio"}),
                                                 minLength: { value: 4, message: "La contraseña debe terner al menos 4 caracteres" },
                                                 // pattern: {
                                                 //     value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
@@ -129,19 +184,19 @@ const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
                                         />
                                         <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
                                     </FormControl>
-                                    <FormControl isInvalid={errors.lastname} isRequired mb={3}>
-                                        <FormLabel htmlFor="lastname" >Apellido</FormLabel>
-                                        <Input id="lastname" placeholder="Ingrese un apellido" defaultValue={user ? user.lastname : ""}
-                                            {...register("lastname", {
+                                    <FormControl isInvalid={errors.lastName} isRequired mb={3}>
+                                        <FormLabel htmlFor="lastName" >Apellido</FormLabel>
+                                        <Input id="lastName" placeholder="Ingrese un apellido" defaultValue={user ? user.lastName : ""}
+                                            {...register("lastName", {
                                                 required: "Este campo es obligatorio",
                                                 minLength: { value: 4, message: "El apellido debe contener al menos 4 caracteres" }
                                             })}
                                         />
-                                        <FormErrorMessage>{errors.lastname && errors.lastname.message}</FormErrorMessage>
+                                        <FormErrorMessage>{errors.lastName && errors.lastName.message}</FormErrorMessage>
                                     </FormControl>
                                     <FormControl isInvalid={errors.role} isRequired mb={3}>
                                         <FormLabel htmlFor="role" >Rol</FormLabel>
-                                        <Select placeholder="Seleccionar un rol" defaultValue={user ? user.role : ""}
+                                        <Select placeholder="Seleccionar un rol" defaultValue={user ? user.role.id : ""}
                                             {...register("role", {
                                                 required: "Selecciona una opcion valida",
                                             })}>
@@ -250,7 +305,7 @@ function Content() {
         <div>
             <h2>Users</h2>
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red" />
+                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red" userId={0} />
                 <Flex alignContent="center" justifyContent="end">
                     <ReactMultiSelectCheckboxes width="250px"
                         style="height: 40px;"
@@ -318,8 +373,8 @@ function Content() {
                                     })}
 
                                     <Td>
-                                        <Button size="sm" p={0} m={0.5} ><CreateUserModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Usuario" user={user} /></Button>
-                                        <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
+                                        <Button size="sm" p={0} m={0.5}><CreateUserModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Usuario" user={user} userId={user["id"]} /></Button>
+                                        <ConfirmationDelete userId={user["id"]}/>
                                     </Td>
                                 </Tr>
                             );
