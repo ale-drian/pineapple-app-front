@@ -13,7 +13,7 @@ class ProductService {
             quantity: data.quantity,
             unit_price: data.unit_price,
             description: data.description,
-            url_image: "no_hay"
+            url_image: data.image
         };
         console.log("data", data)
         console.log("sendData", sendData)
