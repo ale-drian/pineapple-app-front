@@ -7,6 +7,7 @@ import {
 import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import { useAuthContext } from '../../App';
 
 const columns = [
     { label: "Username", value: "username" },
@@ -35,7 +36,7 @@ function FormControlItems({ title, name, placeholder, errors, register }) {
     );
 }
 
-const CreateUserModal = ({ user, title, nameButton, color, size }) => {
+const CreateUserModal = ({ user, title, nameButton, color, size, type }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         handleSubmit,
@@ -44,12 +45,27 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
     } = useForm();
 
     function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                resolve();
-            }, 3000);
-        });
+        if(type == "create"){
+            UserService.create(values).then(result => {
+                if (result.status === 201) {
+                  console.log("correct create");
+                } else {
+                //   setIsError(true);
+                }
+              }).catch(error => {
+                // setIsError(true);
+              });
+        }else if(type == "update"){
+            UserService.create(values).then(result => {
+                if (result.status === 201) {
+                  console.log("correct create");
+                } else {
+                //   setIsError(true);
+                }
+              }).catch(error => {
+                // setIsError(true);
+              })
+        }
     }
     return (
         <div>
@@ -92,11 +108,11 @@ const CreateUserModal = ({ user, title, nameButton, color, size }) => {
                                         <Input id="password" placeholder="Ingrese una contraseña" type="password"
                                             {...register("password", {
                                                 required: "Este campo es obligatorio",
-                                                minLength: { value: 6, message: "La contraseña debe terner al menos 6 caracteres" },
-                                                pattern: {
-                                                    value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
-                                                    message: "La contraseña debe contener al menos un número, mayuscula y minuscula"
-                                                }
+                                                minLength: { value: 4, message: "La contraseña debe terner al menos 4 caracteres" },
+                                                // pattern: {
+                                                //     value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
+                                                //     message: "La contraseña debe contener al menos un número, mayuscula y minuscula"
+                                                // }
                                             })}
                                         />
                                         <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
@@ -175,6 +191,9 @@ function Search() {
 }
 function Content() {
 
+    
+    const {user} = useAuthContext();
+    console.log("user", user);
     const [listUser, setListUser] = useState({ data: [], loading: false });
     const [updateData, setUpdateData] = useState(0);
     const [selectedColumns, setSelectedColumns] = useState([]);
@@ -193,7 +212,8 @@ function Content() {
                         data: res.data.data,
                         loading: true
                     })
-                    console.log(listUser.data);
+                    
+                    console.log("user", user);
                 } else {
                     setListUser({ ...listUser, loading: false })
                 }
@@ -283,7 +303,7 @@ function Content() {
                                                     (
                                                         col.value === "role"
                                                             ?
-                                                            <Td>{user.role == '1' ?
+                                                            <Td>{user.role.id == '1' ?
                                                                 <Badge colorScheme="green">Administrador</Badge> :
                                                                 <Badge colorScheme="purple">Usuario</Badge>
                                                             }</Td>
