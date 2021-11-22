@@ -225,18 +225,32 @@ const CreateUserModal = ({ user, title, nameButton, color, size, userId }) => {
 
 }
 
-function Search() {
-    const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+function Search({ listUser, setListLocalUser}) {
+    
+    const [searchValue, setSearchValue] = useState("")
+    const handleClick = () => {
+        let newListUser = listUser.data.filter(user => {return user.name.includes(searchValue) || user.lastName.includes(searchValue)});
+        console.log("searchValue",searchValue)
+        console.log("listUser",listUser)
+        console.log("newListUser",newListUser)
+        setListLocalUser({data: newListUser});
+    }
 
     return (
         <InputGroup size="md" width="250px">
             <Input bg="white"
                 pr="4.5rem"
-                type={show ? "text" : "password"}
+                type="text"
                 placeholder="Buscar.."
+                onChange={event => setSearchValue(event.target.value)}
+                onKeyUp={event => {
+                        if (event.key === "Enter") {
+                            handleClick();
+                        }
+                    }
+                }
             />
-            <InputRightElement width="4.5rem">
+            <InputRightElement width="4.5rem" >
                 <Button h="1.75rem" size="sm" onClick={handleClick}>
                     <FaSearch />
                 </Button>
@@ -250,6 +264,7 @@ function Content() {
     const {user} = useAuthContext();
     console.log("user", user);
     const [listUser, setListUser] = useState({ data: [], loading: false });
+    const [listLocalUser, setListLocalUser] = useState({ data: [], loading: false });
     const [updateData, setUpdateData] = useState(0);
     const [selectedColumns, setSelectedColumns] = useState([]);
 
@@ -267,7 +282,10 @@ function Content() {
                         data: res.data.data,
                         loading: true
                     })
-                    
+                    setListLocalUser({
+                        data: res.data.data,
+                        loading: true
+                    });
                     console.log("user", user);
                 } else {
                     setListUser({ ...listUser, loading: false })
@@ -317,7 +335,7 @@ function Content() {
                         setState={setSelectedColumns}
                         hideSearch={true}
                     />
-                    <Search />
+                    <Search listUser={listUser} setListLocalUser={setListLocalUser} />
                 </Flex>
             </Flex>
             <br />
@@ -347,7 +365,7 @@ function Content() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {listUser.data.map((user) => {
+                        {listLocalUser.data.map((user) => {
                             return (
                                 <Tr>
 
