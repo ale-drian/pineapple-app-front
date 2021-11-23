@@ -4,12 +4,19 @@ import {
     Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, Image, Textarea, NumberInput, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, NumberInputField,
     useBreakpointValue,
     useColorModeValue,
-    Container
+    Container,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay
 } from '@chakra-ui/react';
 import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaCartPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import axios, { Axios } from 'axios';
+import { useAuthContext } from '../../App';
 
 
 const columns = [
@@ -22,8 +29,58 @@ const columns = [
     { label: "Categoría", value: "category" }
 ]
 
+function ConfirmationDelete({productId, listProductsReload}) {
+    const [isOpen, setIsOpen] = React.useState(false)
+    const onClose = () => setIsOpen(false)
+    const cancelRef = React.useRef()
+    const onDelete = () => {
+        ProductService.delete(productId).then(result => {
+            if (result.status === 201) {
+              console.log("correct delete");
+              listProductsReload()
+              onClose();
+            } else {
+            console.log("error_if")
+            }
+          }).catch(error => {
+              console.log("error_catch")
+          })
+    }
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)} colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
+  
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Eliminar Producto
+              </AlertDialogHeader>
+  
+              <AlertDialogBody>
+                Estas seguro de eliminar a este producto, toda la informacion relacionada a este producto se eliminará.
+              </AlertDialogBody>
+  
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button colorScheme="red" onClick={onDelete} ml={3}>
+                  Eliminar
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+      </>
+    )
+  }
 
-const CreateModal = ({ prod, title, nameButton, color, size }) => {
+const ProductModal = ({ prod, title, nameButton, color, size }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
         
     const formatPrice = (val) => `$` + parseFloat(val).toFixed( 2 )
@@ -44,7 +101,6 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
         setDisplayImage(URL.createObjectURL(event.target.files[0]))
     }
     function onSubmit(values, e) {
-        // uploadImage();
         console.log("values", values.image[0])
         const formData = new FormData();
         formData.append("file",values.image[0]);
@@ -67,17 +123,6 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
         })
         
     }
-    function uploadImage(){
-        const formData = new FormData();
-        formData.append("file",imageSelected);
-        formData.append("upload_preset","cbvwuanq");
-        axios.post( "https://api.cloudinary.com/v1_1/pineappleapp/image/upload",
-        formData).then((response)=>{
-            console.log("response_1",response);
-            console.log("response_2",response.data.public_id);
-            setImageURL("https://res.cloudinary.com/pineappleapp/image/upload/"+response.data.public_id+".jpg")
-        })
-    }
     return (
         <div>
             <Button colorScheme={color} size={size} onClick={onOpen}>{nameButton}</Button>
@@ -91,16 +136,6 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
                         <ModalBody>
                             <SimpleGrid columns={{ sm: 1, md: 2 }} spacing="40px">
                                 <Box>
-                                    <FormControl isInvalid={errors.id} isRequired mb={3}>
-                                        <FormLabel htmlFor="id" >Codigo (todaia no esta)</FormLabel>
-                                        <Input id="id" placeholder="Ingrese un codigo para el producto" defaultValue={prod ? prod.id : ""}
-                                            {...register("id", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 4, message: "El codigo debe contener al menos 4 caracteres" }
-                                            })}
-                                        />
-                                        <FormErrorMessage>{errors.id && errors.id.message}</FormErrorMessage>
-                                    </FormControl>
                                     <FormControl isInvalid={errors.name} isRequired mb={3}>
                                         <FormLabel htmlFor="name" >Nombre</FormLabel>
                                         <Input id="name" placeholder="Ingrese un coreeo electronico" defaultValue={prod ? prod.name : ""}
@@ -221,11 +256,40 @@ function Search() {
         </InputGroup>
     )
 }
+
 function Content() {
 
     const [listProduct, setListProduct] = useState({ data: [], loading: false });
+    const [listLocalProduct, setListLocalProduct] = useState({ data: [], loading: false });
     const [updateData, setUpdateData] = useState(0);
     const [selectedColumns, setSelectedColumns] = useState([]);
+    const {user} = useAuthContext();
+    const [filter, setFilter] = useState({
+        type: "",
+        activate: false,
+        column: ""
+    })
+
+    const listProductsReload = () => {
+        ProductService.list().then(res => {
+            if (res.data.status === 200) {
+                setListProduct({
+                    data: res.data.data,
+                    loading: true
+                })
+                setListLocalProduct({
+                    data: res.data.data,
+                    loading: true
+                });
+            } else {
+                setListProduct({ ...listProduct, loading: false })
+            }
+        })
+        .catch(err => {
+            // setIsError({error: true, message: err.toString()})
+            setListProduct({ ...listProduct, loading: false })
+        })
+    }
 
     useEffect(() => {
         setSelectedColumns([{ label: "Todos", value: "*" }, ...columns]);
@@ -234,23 +298,7 @@ function Content() {
         console.log("Holi")
     }
     useEffect(() => {
-        ProductService.list()
-            .then(res => {
-                if (res.data.status === 200) {
-                    setListProduct({
-                        data: res.data.data,
-                        loading: true
-                    })
-                    console.log(listProduct.data);
-                } else {
-                    setListProduct({ ...listProduct, loading: false })
-                }
-            })
-            .catch(err => {
-                // setIsError({error: true, message: err.toString()})
-                setListProduct({ ...listProduct, loading: false })
-            })
-
+        listProductsReload()
     }, [updateData]);
 
     function getDropdownButtonLabel({ placeholderButtonLabel, value }) {
@@ -309,7 +357,7 @@ function Content() {
             </Flex>
          </Box>
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateModal nameButton="Crear Producto" title="Crear Producto" color="red" />
+                <ProductModal nameButton="Crear Producto" title="Crear Producto" color="red" />
                 <Flex alignContent="center" justifyContent="end">
                     <ReactMultiSelectCheckboxes width="250px"
                         style="height: 40px;"
@@ -381,9 +429,9 @@ function Content() {
 
                                     <Td>
                                         <Button size="sm" p={0} m={0.5} >
-                                            <CreateModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} />
+                                            <ProductModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} />
                                         </Button>
-                                        <Button colorScheme="red" size="sm" p={0} m={0.5}><FaTrash /></Button>
+                                        <ConfirmationDelete listProductsReload={listProductsReload} productId={prod["id"]}/>
                                     </Td>
                                 </Tr>
                             );

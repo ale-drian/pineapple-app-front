@@ -41,25 +41,6 @@ ReactHTMLTableToExcel.format = (s, c) => {
     return s.replace(/{(\w+)}/g, (m, p) => c[p]);
   };
 
-function FormControlItems({ title, name, placeholder, errors, register }) {
-    return (
-        <FormControl isInvalid={errors.name}>
-            <FormLabel htmlFor={name}>{title}</FormLabel>
-            <Input
-                id={name}
-                placeholder={placeholder}
-                {...register({ name }, {
-                    required: "El campo ${name} es requerido",
-                    minLength: { value: 4, message: "Minimum length should be 4" }
-                })}
-            />
-            <FormErrorMessage>
-                {errors.name && errors.name.message}
-            </FormErrorMessage>
-        </FormControl>
-    );
-}
-
 function ConfirmationDelete({userId, listUsersReload}) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)

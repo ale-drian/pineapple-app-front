@@ -37,7 +37,7 @@ class ProductService {
 
     static delete = (userId) => {
 
-        return axios.delete(this.urlProduct + " / " + userId);
+        return axios.delete(this.urlProduct + "/" + userId);
     }
 
     static list = () => {
