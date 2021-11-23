@@ -8,7 +8,7 @@ function Home() {
     const {user} = useAuthContext();
     const handleClickLogin = () => navigate('/login');
     const handleClickDashboard = () => navigate('/dashboard');
-    console.log("user", user.logged)
+    console.log("user", user.role.id)
     return (
         <div>
             <p>Home</p>

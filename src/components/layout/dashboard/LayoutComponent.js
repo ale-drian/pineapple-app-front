@@ -46,14 +46,14 @@ import Sidebar from './SidebarComponent';
 import MobileNav from './HeaderComponent';
 import { useAuthContext } from '../../../App';
 
-const LinkItems = [
-    { name: 'Inicio', icon: FaHome, ref: '/dashboard/' },
-    { name: 'Usuarios', icon: FaUserFriends, ref: '/dashboard/users' },
-    { name: 'Productos', icon: FaBoxOpen, ref: '/dashboard/products' },
-];
 
 export default function Layout(){
     const {user} = useAuthContext();
+    const LinkItems = [
+        { name: 'Inicio', icon: FaHome, ref: '/dashboard/' },
+        ... user.role.id == 1 ? [{ name: 'Usuarios', icon: FaUserFriends, ref: '/dashboard/users' }] : [],
+        { name: 'Productos', icon: FaBoxOpen, ref: '/dashboard/products' },
+    ];
     const { isOpen, onOpen, onClose } = useDisclosure();
     
     const navigate = useNavigate();

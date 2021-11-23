@@ -39,8 +39,14 @@ function App() {
             { user.logged ?
               <Route path="/dashboard" element={<Layout/>}>
                   <Route exact  path="/dashboard/" element={<Dashboard />} />
+
                   <Route exact  path="/dashboard/products" element={<Product />} />
-                  <Route exact  path="/dashboard/users" element={<User />} />
+                  {
+                    user.role.id == 1 ?
+                    <Route exact  path="/dashboard/users" element={<User />} />
+                    :
+                    ""
+                  }
               </Route>
               :
               <Route exact  path="/login" element={<Login/>} />
