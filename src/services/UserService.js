@@ -49,6 +49,16 @@ class UserService {
         return axios.put(this.urlUser + "/" + userId, sendData);
     }
 
+    static updatePassword = (data,userId) => {
+
+        let sendData = {
+            password: data.password,
+            email: data.email
+        };
+
+        return axios.put(this.urlUser + "/" + userId, sendData);
+    }
+
     static delete = (userId) => {
         console.log("UServ", userId)
         return axios.delete(this.urlUser + "/" + userId);
