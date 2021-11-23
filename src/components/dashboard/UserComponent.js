@@ -321,10 +321,24 @@ function Content() {
 
     function handleOrder(type, column){
         if(type == "asc"){
-            let sortedAsceding = listLocalUser.data.sort((a, b) => {
-                return a[column].toUpperCase() - b[column].toUpperCase();
-            });
+            let sortedAsceding = null
+            if(column == "role"){
+                sortedAsceding = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id > b[column].id) ? 1 : -1);
+            }else{
+                sortedAsceding = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].toUpperCase() > b[column].toUpperCase()) ? 1 : -1);
+            }
+            console.log("sortedAsceding",sortedAsceding)
             setListLocalUser({data: sortedAsceding});
+        }
+        if(type == "des"){
+            let sortedDescending = null;
+            if(column == "role"){
+                sortedDescending = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id < b[column].id) ? 1 : -1);
+            }else{
+                sortedDescending = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].toUpperCase() < b[column].toUpperCase()) ? 1 : -1);
+            }
+            console.log("sortedDescending",sortedDescending)
+            setListLocalUser({data: sortedDescending});
         }
     }
 
