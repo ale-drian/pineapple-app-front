@@ -229,7 +229,15 @@ function Search({ listUser, setListLocalUser}) {
     
     const [searchValue, setSearchValue] = useState("")
     const handleClick = () => {
-        let newListUser = listUser.data.filter(user => {return user.name.includes(searchValue) || user.lastName.includes(searchValue)});
+        let newListUser = listUser.data.filter(user => 
+            {
+                return (user.name.toUpperCase().includes(searchValue.toUpperCase()) || 
+                user.lastName.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.username.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.email.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.role.name.toUpperCase().includes(searchValue.toUpperCase()) 
+                );
+            });
         console.log("searchValue",searchValue)
         console.log("listUser",listUser)
         console.log("newListUser",newListUser)
