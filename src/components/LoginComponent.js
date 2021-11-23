@@ -64,9 +64,11 @@ function Login() {
         navigate("/dashboard");
       } else {
         setIsError(true);
+        console.log("ERRORR")
       }
     }).catch(error => {
       setIsError(true);
+      console.log(error);
     });
     e.target.reset(); //borra el contenido de los inputs
   }

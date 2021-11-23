@@ -32,7 +32,8 @@ import {
     FaChevronDown,
 } from 'react-icons/fa';
 import logo from '../../../images/logo_large.png';
-
+import mySvg from '../../../images/background.png';
+import svg2 from '../../../images/user-header.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../App';
 
@@ -44,7 +45,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
             px={{ base: 4, md: 4 }}
             height="20"
             alignItems="center"
-            bg={useColorModeValue('white', 'gray.900')}
+            backgroundImage={`url(${svg2})`}
+            backgroundSize="cover" backgroundRepeat="no-repeat"
+            backgroundPosition='center'
             borderBottomWidth="1px"
             borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
             justifyContent={{ base: 'space-between', md: 'flex-end' }}
@@ -64,7 +67,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 alt="Inicia Sesión"
             />
 
-            <HStack spacing={{ base: '0', md: '6' }}>
+            <HStack bg="white" px={2} spacing={{ base: '0', md: '6' }} borderRadius="10px">
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
@@ -81,7 +84,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
                                     display={{ base: 'none', md: 'flex' }}
                                     alignItems="flex-start"
                                     spacing="1px"
-                                    ml="2">
+                                    ml="2"
+                                    >
                                     <Text fontSize="sm">{user.username}</Text>
                                     <Text fontSize="xs" color="gray.600">
                                         {user.role.name}
