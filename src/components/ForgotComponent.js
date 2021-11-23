@@ -15,6 +15,7 @@ import {
     import svg2 from '../bg-login4.png';
     import { v1 as uuidv1 } from 'uuid';
     import emailjs from 'emailjs-com';
+    import UserService from '../services/UserService';
 
   function Forgot() {
     var val = Math.floor(Math.random()*90000) + 10000;
@@ -23,7 +24,21 @@ import {
     const [ResetCode, setResetCode] = useState(val);
     const [valueI, setValue] = useState();
     const [userEmail, setUserEmail] = useState();
+    const [newPassword, setNewPassword] = useState();
+    const [user, setUser] = useState({});
 
+    useEffect( () =>
+        UserService.listUserByEmail(userEmail).then(res => {
+            if (res.data.status === 200) {
+                setUser( res.data.data)
+            } else {
+                console.log("no se encontro coincidencias");
+            }
+        })
+        .catch(err => {
+            // setIsError({error: true, message: err.toString()})
+            console.log(err);
+        }));
 
      function sendEmail(event) { 
         emailjs.init('user_7zXitI5CX8W3YrCmA5ZaF')
@@ -36,6 +51,8 @@ import {
          .then(() => {
            
            alert('Hemos enviado el email. Revisa tu correo!');
+           console.log("user", user);
+           
          }, (err) => {
            
            alert(JSON.stringify(err));
@@ -54,6 +71,24 @@ import {
             //console.log("diferentess")
         }
         }
+
+    function changePassword(data, e) {
+        const parameters = {
+            email: userEmail,
+            password:newPassword
+        };
+           
+            console.log(parameters);
+            UserService.updatePassword(parameters, user.id).then(result => {
+                if (result.status === 200) {
+                  console.log("correct update");
+                } else {
+                //   setIsError(true);
+                }
+              }).catch(error => {
+                console.log(error);
+              })
+          }
     
     const initialRef = React.useRef()
     const finalRef = React.useRef()
@@ -149,11 +184,11 @@ import {
     <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Ingrese la nueva contraseña:</FormLabel>
-              <Input ref={initialRef} placeholder="Nueva Contraseña" type="password" />
+              <Input ref={initialRef}  onChange={e => setNewPassword(e.target.value)} placeholder="Nueva Contraseña" type="password" />
             </FormControl>
           </ModalBody>
     <ModalFooter>   
-        <Button colorScheme="teal">
+        <Button  onClick={changePassword} colorScheme="teal">
             Aceptar
         </Button>      
     </ModalFooter>
