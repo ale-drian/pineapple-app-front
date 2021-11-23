@@ -44,7 +44,7 @@ function FormControlItems({ title, name, placeholder, errors, register }) {
     );
 }
 
-function ConfirmationDelete({userId}) {
+function ConfirmationDelete({userId, listUsersReload}) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const cancelRef = React.useRef()
@@ -52,6 +52,8 @@ function ConfirmationDelete({userId}) {
         UserService.delete(userId).then(result => {
             if (result.status === 201) {
               console.log("correct delete");
+              listUsersReload()
+              onClose();
             } else {
             console.log("error_if")
             }
@@ -93,22 +95,28 @@ function ConfirmationDelete({userId}) {
     )
   }
 
-const CreateUserModal = ({ user, title, nameButton, color, size, userId }) => {
+const UserModal = ({ user, title, nameButton, color, size, userId, listUsersReload }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         handleSubmit,
         register,
+        reset,
         formState: { errors, isSubmitting }
     } = useForm();
 
-    function onSubmit(values) {
+    function onSubmit(values, e) {
         if(userId == 0){
             UserService.create(values).then(result => {
                 if (result.status === 201) {
                   console.log("correct create");
+                  listUsersReload();
+                  onClose()
+                  e.target.reset(); 
+                  reset(user);
                 } else {
                 //   setIsError(true);
                 }
+                listUsersReload();
               }).catch(error => {
                 // setIsError(true);
               });
@@ -116,6 +124,9 @@ const CreateUserModal = ({ user, title, nameButton, color, size, userId }) => {
             UserService.update(values, userId).then(result => {
                 if (result.status === 200) {
                   console.log("correct update");
+                  listUsersReload();
+                  e.target.reset();
+                  onClose()
                 } else {
                 //   setIsError(true);
                 }
@@ -123,6 +134,7 @@ const CreateUserModal = ({ user, title, nameButton, color, size, userId }) => {
                 // setIsError(true);
               })
         }
+        e.target.reset(); 
     }
     return (
         <div>
@@ -231,7 +243,15 @@ function Search({ listUser, setListLocalUser}) {
     
     const [searchValue, setSearchValue] = useState("")
     const handleClick = () => {
-        let newListUser = listUser.data.filter(user => {return user.name.includes(searchValue) || user.lastName.includes(searchValue)});
+        let newListUser = listUser.data.filter(user => 
+            {
+                return (user.name.toUpperCase().includes(searchValue.toUpperCase()) || 
+                user.lastName.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.username.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.email.toUpperCase().includes(searchValue.toUpperCase()) ||
+                user.role.name.toUpperCase().includes(searchValue.toUpperCase()) 
+                );
+            });
         console.log("searchValue",searchValue)
         console.log("listUser",listUser)
         console.log("newListUser",newListUser)
@@ -270,6 +290,28 @@ function Content() {
     const [updateData, setUpdateData] = useState(0);
     const [selectedColumns, setSelectedColumns] = useState([]);
 
+    const listUsersReload = () => {
+        UserService.list().then(res => {
+            if (res.data.status === 200) {
+                setListUser({
+                    data: res.data.data,
+                    loading: true
+                })
+                setListLocalUser({
+                    data: res.data.data,
+                    loading: true
+                });
+                console.log("user", user);
+            } else {
+                setListUser({ ...listUser, loading: false })
+            }
+        })
+        .catch(err => {
+            // setIsError({error: true, message: err.toString()})
+            setListUser({ ...listUser, loading: false })
+        })
+    }
+
     useEffect(() => {
         setSelectedColumns([{ label: "Todos", value: "*" }, ...columns]);
     }, []);
@@ -277,26 +319,7 @@ function Content() {
         console.log("Holi")
     }
     useEffect(() => {
-        UserService.list()
-            .then(res => {
-                if (res.data.status === 200) {
-                    setListUser({
-                        data: res.data.data,
-                        loading: true
-                    })
-                    setListLocalUser({
-                        data: res.data.data,
-                        loading: true
-                    });
-                    console.log("user", user);
-                } else {
-                    setListUser({ ...listUser, loading: false })
-                }
-            })
-            .catch(err => {
-                // setIsError({error: true, message: err.toString()})
-                setListUser({ ...listUser, loading: false })
-            })
+        listUsersReload();
 
     }, [updateData]);
 
@@ -323,10 +346,24 @@ function Content() {
 
     function handleOrder(type, column){
         if(type == "asc"){
-            let sortedAsceding = listLocalUser.data.sort((a, b) => {
-                return a[column].toUpperCase() - b[column].toUpperCase();
-            });
+            let sortedAsceding = null
+            if(column == "role"){
+                sortedAsceding = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id > b[column].id) ? 1 : -1);
+            }else{
+                sortedAsceding = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].toUpperCase() > b[column].toUpperCase()) ? 1 : -1);
+            }
+            console.log("sortedAsceding",sortedAsceding)
             setListLocalUser({data: sortedAsceding});
+        }
+        if(type == "des"){
+            let sortedDescending = null;
+            if(column == "role"){
+                sortedDescending = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id < b[column].id) ? 1 : -1);
+            }else{
+                sortedDescending = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].toUpperCase() < b[column].toUpperCase()) ? 1 : -1);
+            }
+            console.log("sortedDescending",sortedDescending)
+            setListLocalUser({data: sortedDescending});
         }
     }
 
@@ -366,7 +403,7 @@ function Content() {
          </Box>
 
             <Flex alignContent="center" justifyContent="space-between">
-                <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red" userId={0} />
+                <UserModal listUsersReload={listUsersReload}  nameButton="Crear Usuario" title="Crear Usuario" color="red" userId={0} />
                 <Flex alignContent="center" justifyContent="end">
                     <ReactMultiSelectCheckboxes width="250px"
                         style="height: 40px;"
@@ -434,8 +471,8 @@ function Content() {
                                     })}
 
                                     <Td>
-                                        <Button size="sm" p={0} m={0.5}><CreateUserModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Usuario" user={user} userId={user["id"]} /></Button>
-                                        <ConfirmationDelete userId={user["id"]}/>
+                                        <Button size="sm" p={0} m={0.5}><UserModal listUsersReload={listUsersReload} nameButton={<FaEdit />} color="blue" size="sm" title="Editar Usuario" user={user} userId={user["id"]} /></Button>
+                                        <ConfirmationDelete listUsersReload={listUsersReload} userId={user["id"]}/>
                                     </Td>
                                 </Tr>
                             );
