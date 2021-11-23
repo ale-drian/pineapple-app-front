@@ -20,7 +20,8 @@ function Home() {
                     <Image alt="logoPineappleMarket" objectFit="contains" src={pmlogo} />
                 </AspectRatio>
                 <Heading w="100%" fontSize="2xl" mb="4" textAlign="center"> Pen Pinneapple Apple Pen</Heading>
-                <Text w="100%"  fontSize="md" mb="4" textAlign="center">Alejandra Adrian <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Sheyla Breña <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Ariadna Eyzaguirre <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Mafer Lopez <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Lucia Pereyra</Text>
+                <Text w="100%"  fontSize="md" mb="4" textAlign="center">Alejandra Adrian <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Lucia Pereyra <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/> Mariam Apaza </Text>
+                <Text w="100%"  fontSize="md" mb="4" textAlign="center"> Ariadna Eyzaguirre <Box w="1" h="1" bg="orange" display="inline-block" mx={2}/>  Sheyla Breña </Text>
                 <Center>
                     {
                             user.logged ?
