@@ -287,6 +287,11 @@ function Content() {
     const [listLocalUser, setListLocalUser] = useState({ data: [], loading: false });
     const [updateData, setUpdateData] = useState(0);
     const [selectedColumns, setSelectedColumns] = useState([]);
+    const [filter, setFilter] = useState({
+        type: "",
+        activate: false,
+        column: ""
+    })
 
     const listUsersReload = () => {
         UserService.list().then(res => {
@@ -344,6 +349,13 @@ function Content() {
 
     function handleOrder(type, column){
         if(type == "asc"){
+
+            setFilter({
+                type: "asc",
+                activate: true,
+                column: column
+            })
+
             let sortedAsceding = null
             if(column == "role"){
                 sortedAsceding = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id > b[column].id) ? 1 : -1);
@@ -352,8 +364,14 @@ function Content() {
             }
             console.log("sortedAsceding",sortedAsceding)
             setListLocalUser({data: sortedAsceding});
+        
         }
         if(type == "des"){
+            setFilter({
+                type: "des",
+                activate: true,
+                column: column
+            })
             let sortedDescending = null;
             if(column == "role"){
                 sortedDescending = [].concat(listLocalUser.data).sort((a, b) =>  ( a[column].id < b[column].id) ? 1 : -1);
@@ -398,8 +416,12 @@ function Content() {
                                             <Th>
                                                 <Stack direction={["column", "row"]} spacing="0px">
                                                     <Text mr={2}>{col.label}</Text>
-                                                    <button onClick={()=>handleOrder("des", col.value)}><FaArrowDown /></button>
-                                                    <button onClick={()=>handleOrder("asc", col.value)}><FaArrowUp /></button>
+                                                    <button onClick={()=>handleOrder("des", col.value)}>
+                                                        <FaArrowDown color={filter.type == "des" && filter.column == col.value ? "red" : ""}/>
+                                                    </button>
+                                                    <button onClick={()=>handleOrder("asc", col.value)}>
+                                                        <FaArrowUp color={filter.type == "asc" && filter.column == col.value ? "red" : ""}/>
+                                                    </button>
                                                 </Stack>
                                             </Th>
                                             : ''
