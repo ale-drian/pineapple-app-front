@@ -63,6 +63,10 @@ class UserService {
         return axios.get(this.urlUser + "/" + userId);
     }
 
+    static listUserByEmail = (email) => {
+        return axios.get(this.urlUser + "/email/" + email);
+    }
+
 }
 
 export default UserService;

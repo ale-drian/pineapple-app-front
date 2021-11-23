@@ -18,9 +18,12 @@ import {
 
   function Forgot() {
     var val = Math.floor(Math.random()*90000) + 10000;
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isFirstModalOpen , onOpen: onFirstModalOpen, onClose: onFirstModalClose } = useDisclosure()
+    const { isOpen: isSecondModalOpen , onOpen: onSecondModalOpen, onClose: onSecondModalClose } = useDisclosure()
     const [ResetCode, setResetCode] = useState(val);
     const [valueI, setValue] = useState();
+    const [userEmail, setUserEmail] = useState();
+
 
      function sendEmail(event) { 
         emailjs.init('user_7zXitI5CX8W3YrCmA5ZaF')
@@ -45,9 +48,10 @@ import {
         console.log(valueI)
         const stringcode = valueI.toString();
         if(ResetCode == stringcode){
-            console.log("igualess")
+            //console.log("igualess")   
+            onSecondModalOpen();
         }else{
-            console.log("diferentess")
+            //console.log("diferentess")
         }
         }
     
@@ -90,6 +94,7 @@ import {
             _placeholder={{ color: 'gray.500' }}
             type="email"
             name="user_email"
+            onChange={e => setUserEmail(e.target.value)}
           />
           <input name="code" type="hidden"  value={ResetCode}></input>
         </FormControl>
@@ -103,8 +108,8 @@ import {
             }}>
                 Solicitar Nueva Contraseña
           </Button>
-          <Button colorScheme="blackAlpha" onClick={onOpen}>Ingresar Código de Recuperación</Button>
-      |
+          <Button colorScheme="blackAlpha" onClick={onFirstModalOpen}>Ingresar Código de Recuperación</Button>
+         
         </Stack>
         </form>
       </Stack>
@@ -112,8 +117,8 @@ import {
     <Modal
     initialFocusRef={initialRef}
     finalFocusRef={finalRef}
-    isOpen={isOpen}
-    onClose={onClose}
+    isOpen={isFirstModalOpen}
+    onClose={onFirstModalClose}
     
   >
     <ModalOverlay />
@@ -131,10 +136,30 @@ import {
         <Button onClick={validateResetCode} colorScheme="yellow" mr={3}>
           Ok
         </Button>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onFirstModalClose}>Cancel</Button>
       </ModalFooter>
     </ModalContent>
   </Modal>
+
+  <Modal  id="resetPassword" isOpen={isSecondModalOpen} onClose={onSecondModalClose}>
+    <ModalOverlay />
+    <ModalContent>
+    <ModalHeader>Cambio de Contraseña</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Ingrese la nueva contraseña:</FormLabel>
+              <Input ref={initialRef} placeholder="Nueva Contraseña" type="password" />
+            </FormControl>
+          </ModalBody>
+    <ModalFooter>   
+        <Button colorScheme="teal">
+            Aceptar
+        </Button>      
+    </ModalFooter>
+    </ModalContent>
+</Modal>
+  
   </>
      )
  
