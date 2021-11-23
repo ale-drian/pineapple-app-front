@@ -36,9 +36,18 @@ import mySvg from '../../../images/background.png';
 import svg2 from '../../../images/user-header.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../App';
+import { types } from '../../../auth/authReducer';
 
 const MobileNav = ({ onOpen, ...rest }) => {
-    const {user} = useAuthContext();
+    
+  const navigate = useNavigate();
+    const {user, dispatch} = useAuthContext();
+    const handleLogout = () => {
+        navigate("/login");
+        dispatch({
+            type: types.logout
+        })
+    }
     return (
         <Flex
             ml={{ base: 0, md: 60 }}
@@ -99,11 +108,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                         <MenuList
                             bg={useColorModeValue('white', 'gray.900')}
                             borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>Settings</MenuItem>
-                            <MenuItem>Billing</MenuItem>
-                            <MenuDivider />
-                            <MenuItem>Sign out</MenuItem>
+                            <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>

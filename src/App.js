@@ -35,16 +35,20 @@ function App() {
     <AuthContext.Provider value={{ user, dispatch }}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route exact path="/" element={<Home/>} />
             { user.logged ?
               <Route path="/dashboard" element={<Layout/>}>
-                  <Route path="/dashboard/" element={<Dashboard />} />
-                  <Route path="/dashboard/products" element={<Product />} />
-                  <Route path="/dashboard/users" element={<User />} />
-                  <Route path="/dashboard/*" element={<Navigate to ="/login" />}/>
+                  <Route exact  path="/dashboard/" element={<Dashboard />} />
+                  <Route exact  path="/dashboard/products" element={<Product />} />
+                  <Route exact  path="/dashboard/users" element={<User />} />
               </Route>
               :
-              <Route path="/login" element={<Login/>} />
+              <Route exact  path="/login" element={<Login/>} />
+            }
+            { user.logged ? 
+              <Route path="/*" element={<Navigate to ="/dashboard" />}/>
+            :
+              <Route path="/*" element={<Navigate to ="/login" />}/>
             }
         </Routes>
       </Router>

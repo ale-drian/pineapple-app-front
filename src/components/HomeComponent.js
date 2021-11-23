@@ -1,14 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, ButtonGroup } from '@chakra-ui/react';
+import { useAuthContext } from '../App';
 
 function Home() {
     const navigate = useNavigate();
-    const handleClick = () => navigate('/login');
+    const {user} = useAuthContext();
+    const handleClickLogin = () => navigate('/login');
+    const handleClickDashboard = () => navigate('/dashboard');
+    console.log("user", user.logged)
     return (
         <div>
             <p>Home</p>
-            <Button colorScheme="blue" onClick={handleClick}>Login</Button>
+            {
+                user.logged ?
+                <Button colorScheme="red" onClick={handleClickDashboard}>Dashboard</Button>
+                :
+                <Button colorScheme="blue" onClick={handleClickLogin}>Login</Button>
+            }
         </div>
     );
 }
