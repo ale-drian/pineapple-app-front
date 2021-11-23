@@ -11,23 +11,26 @@ class ProductService {
             category: data.category,
             quantity: data.quantity,
             unit_price: data.unit_price,
-            description: data.description,
-            url_image: data.image
+            ...(data.description != "" && {description: data.description}),
+            ...(data.image != null && {url_image: data.image})
         };
         return axios.post(this.urlProduct, sendData);
     }
 
     static update = (data,productId) => {
 
+        console.log("data",data)
         let sendData = {
             name: data.name,
             category: data.category,
             quantity: data.quantity,
             unit_price: data.unit_price,
-            description: data.description,
-            url_image: data.image
+            ...(data.description != "" && {description: data.description}),
+            ...(data.image != null && {url_image: data.image})
         };
-        return axios.put(this.urlProduct, sendData);
+
+        console.log("sendData",sendData)
+        return axios.put(this.urlProduct + "/" + productId, sendData);
     }
 
     static delete = (productId) => {

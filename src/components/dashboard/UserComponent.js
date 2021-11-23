@@ -92,7 +92,6 @@ const UserModal = ({ user, title, nameButton, color, size, userId, listUsersRelo
                   console.log("correct create");
                   listUsersReload();
                   onClose()
-                  e.target.reset(); 
                   reset(user);
                 } else {
                 //   setIsError(true);
@@ -106,7 +105,6 @@ const UserModal = ({ user, title, nameButton, color, size, userId, listUsersRelo
                 if (result.status === 200) {
                   console.log("correct update");
                   listUsersReload();
-                  e.target.reset();
                   onClose()
                 } else {
                 //   setIsError(true);
