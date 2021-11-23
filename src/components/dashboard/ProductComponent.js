@@ -40,22 +40,32 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
         formState: { errors, isSubmitting }
     } = useForm();
 
-    function handleDisplayImage(event){
+    const handleDisplayImage = (event) => {
         setDisplayImage(URL.createObjectURL(event.target.files[0]))
-        setImageSelected(event.target.files[0]);
     }
     function onSubmit(values, e) {
-        uploadImage();
-        ProductService.create(values).then(result => {
-            if (result.status === 201) {
-              console.log("Pasó")
-            } else {
-              console.log("error status")
-            }
-          }).catch(error => {
-            console.log("error catch")
-          });
-          e.target.reset();
+        // uploadImage();
+        console.log("values", values.image[0])
+        const formData = new FormData();
+        formData.append("file",values.image[0]);
+        formData.append("upload_preset","cbvwuanq");
+        axios.post( "https://api.cloudinary.com/v1_1/pineappleapp/image/upload",
+        formData).then((response)=>{
+            console.log("response_1",response);
+            console.log("response_2",response.data.public_id);
+            let imgURL = "https://res.cloudinary.com/pineappleapp/image/upload/"+response.data.public_id+".jpg";
+            values.image = imgURL;
+            ProductService.create(values).then(result => {
+                if (result.status === 201) {
+                console.log("Pasó")
+                } else {
+                console.log("error status")
+                }
+            }).catch(error => {
+                console.log("error catch")
+            });
+        })
+        
     }
     function uploadImage(){
         const formData = new FormData();
@@ -63,9 +73,9 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
         formData.append("upload_preset","cbvwuanq");
         axios.post( "https://api.cloudinary.com/v1_1/pineappleapp/image/upload",
         formData).then((response)=>{
-            console.log(response);
-            console.log(response.data.public_id);
-            setImageURL("https://api.cloudinary.com/v1_1/pineappleapp/image/upload/"+response.data.public_id)
+            console.log("response_1",response);
+            console.log("response_2",response.data.public_id);
+            setImageURL("https://res.cloudinary.com/pineappleapp/image/upload/"+response.data.public_id+".jpg")
         })
     }
     return (
@@ -159,9 +169,10 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
                                         />
                                         <FormErrorMessage>{errors.category && errors.category.message}</FormErrorMessage>
                                     </FormControl>
-                                    <FormControl isInvalid={errors.category} mb={3}>
-                                        <FormLabel htmlFor="category" >Imagen</FormLabel>
-                                        <Input id="category" placeholder="Ingrese un nombre" type="file"
+                                    <FormControl isInvalid={errors.image} mb={3}>
+                                        <FormLabel htmlFor="image" >Imagen</FormLabel>
+                                        <Input id="image" placeholder="Ingrese un nombre" type="file"
+                                            {...register("image")}
                                             onChange={handleDisplayImage}
                                         />
                                         <Image
@@ -169,7 +180,7 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
                                             objectFit="cover"
                                             src={displayImage}
                                         />
-                                        <FormErrorMessage>{errors.category && errors.category.message}</FormErrorMessage>
+                                        <FormErrorMessage>{errors.image && errors.image.message}</FormErrorMessage>
                                     </FormControl>
                                 </Box>
                             </SimpleGrid>
