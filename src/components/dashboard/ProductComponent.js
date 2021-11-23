@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ProductService from "../../services/ProductService";
 import {
-    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, Image, Textarea, NumberInput, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, NumberInputField
+    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, Image, Textarea, NumberInput, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, NumberInputField,
+    useBreakpointValue,
+    useColorModeValue,
+    Container
 } from '@chakra-ui/react';
-import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaCartPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
@@ -245,7 +248,38 @@ function Content() {
 
     return (
         <div>
-            <h2>Productos</h2>
+            <Box>
+            <Flex
+                color={useColorModeValue('gray.600', 'white')}
+                minH={'60px'}
+                py={{ base: 2 }}
+                px={{ base: 4 }}
+                my={4}
+                borderBottom={4}
+                borderStyle={'solid'}
+                borderBottomColor={useColorModeValue('gray.300', 'gray.900')}
+                align={'center'}
+                bg={useColorModeValue('gray.300', 'gray.900')}
+                borderRadius={20}>
+                <Flex
+                flex={{ base: 1, md: 'auto' }}
+                ml={{ base: -2 }}
+                display={{ base: 'flex', md: 'none' }}> 
+                </Flex>
+                <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+                <Text
+                    textAlign={useBreakpointValue({ base: 'center', sm:'right', md: 'center' })}
+                    fontFamily={'heading'}
+                    color="gray"
+                    color={useColorModeValue('gray.800', 'white')}
+                    fontSize="20px">
+                  <strong>  Inventario de Productos</strong>
+                </Text>
+                
+                </Flex>
+        
+            </Flex>
+         </Box>
             <Flex alignContent="center" justifyContent="space-between">
                 <CreateModal nameButton="Crear Producto" title="Crear Producto" color="red" />
                 <Flex alignContent="center" justifyContent="end">

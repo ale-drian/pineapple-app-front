@@ -52,6 +52,7 @@ const Sidebar = ({ onClose,LinkItems, ...rest }) => {
             w={{ base: 'full', md: 60 }}
             pos="fixed"
             h="full"
+            bgColor="#FF5757"
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
                 <Image
@@ -80,9 +81,10 @@ const NavItem = ({ icon, name, toRef, ...rest }) => {
                 borderRadius="lg"
                 role="group"
                 cursor="pointer"
+                color="white"
                 _hover={{
-                    bg: 'cyan.400',
-                    color: 'white',
+                    bg: 'white',
+                    color: 'black',
                 }}
                 {...rest}>
                 {icon && (
@@ -90,7 +92,7 @@ const NavItem = ({ icon, name, toRef, ...rest }) => {
                         mr="4"
                         fontSize="16"
                         _groupHover={{
-                            color: 'white',
+                            color: 'black',
                         }}
                         as={icon}
                     />

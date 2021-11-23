@@ -9,8 +9,10 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay,
+    useBreakpointValue,
+    useColorModeValue
 } from '@chakra-ui/react';
-import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaUserAlt } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { useAuthContext } from '../../App';
@@ -330,7 +332,39 @@ function Content() {
 
     return (
         <div>
-            <h2>Users</h2>
+            <Box>
+            <Flex
+                color={useColorModeValue('gray.600', 'white')}
+                minH={'60px'}
+                py={{ base: 2 }}
+                px={{ base: 4 }}
+                my={4}
+                borderBottom={4}
+                borderStyle={'solid'}
+                borderBottomColor={useColorModeValue('gray.300', 'gray.900')}
+                align={'center'}
+                bg={useColorModeValue('gray.300', 'gray.900')}
+                borderRadius={20}>
+                <Flex
+                flex={{ base: 1, md: 'auto' }}
+                ml={{ base: -2 }}
+                display={{ base: 'flex', md: 'none' }}> 
+                </Flex>
+                <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+                <Text
+                    textAlign={useBreakpointValue({ base: 'center', sm:'right', md: 'center' })}
+                    fontFamily={'heading'}
+                    color="gray"
+                    color={useColorModeValue('gray.800', 'white')}
+                    fontSize="20px">
+                  <strong>  Administración de Usuarios</strong>
+                </Text>
+                
+                </Flex>
+        
+            </Flex>
+         </Box>
+
             <Flex alignContent="center" justifyContent="space-between">
                 <CreateUserModal nameButton="Crear Usuario" title="Crear Usuario" color="red" userId={0} />
                 <Flex alignContent="center" justifyContent="end">
