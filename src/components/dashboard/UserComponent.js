@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import UserService from "../../services/UserService";
 import Layout from '../layout/dashboard/LayoutComponent';
-import  ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import {
     Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, 
     AlertDialog,
@@ -25,21 +24,6 @@ const columns = [
     { label: "Correo", value: "email" },
     { label: "Rol", value: "role" }
 ]
-
-ReactHTMLTableToExcel.format = (s, c) => {
-    if (c && c['table']) {
-      const html = c.table;
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const rows = doc.querySelectorAll('tr');
-  
-      for (const row of rows) row.removeChild(row.lastChild);
-  
-      c.table = doc.querySelector('table').outerHTML;
-    }
-  
-    return s.replace(/{(\w+)}/g, (m, p) => c[p]);
-  };
 
 function ConfirmationDelete({userId, listUsersReload}) {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -418,14 +402,6 @@ function Content() {
                 </Flex>
         
             </Flex>
-            <ReactHTMLTableToExcel
-                id="btnExportToExcel"
-                table = "table_users"
-                filename="Users"
-                sheet = "pagina 1"
-                buttonText = "Exportar"
-                className="download-table-xls-button"
-            />
          </Box>
 
             <Flex alignContent="center" justifyContent="space-between">

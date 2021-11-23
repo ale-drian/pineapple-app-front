@@ -12,11 +12,12 @@ import {
     AlertDialogContent,
     AlertDialogOverlay
 } from '@chakra-ui/react';
-import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaCartPlus } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaCartPlus,FaFileDownload } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import axios, { Axios } from 'axios';
 import { useAuthContext } from '../../App';
+import  ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 
 const columns = [
@@ -28,6 +29,22 @@ const columns = [
     { label: "Imagen", value: "url_image" },
     { label: "Categoría", value: "category" }
 ]
+
+//Exportar Tabla
+ReactHTMLTableToExcel.format = (s, c) => {
+    if (c && c['table']) {
+      const html = c.table;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const rows = doc.querySelectorAll('tr');
+  
+      for (const row of rows) row.removeChild(row.lastChild);
+  
+      c.table = doc.querySelector('table').outerHTML;
+    }
+  
+    return s.replace(/{(\w+)}/g, (m, p) => c[p]);
+  };
 
 function ConfirmationDelete({productId, listProductsReload}) {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -353,7 +370,15 @@ function Content() {
                 </Text>
                 
                 </Flex>
-        
+                
+                <ReactHTMLTableToExcel
+                    id="btnExportToExcel"
+                    table = "table_products"
+                    filename="Products"
+                    sheet = "pagina 1"
+                    buttonText = {<Text>Exportar Excel</Text>}
+                    className="download-table-xls-button"
+                />
             </Flex>
          </Box>
             <Flex alignContent="center" justifyContent="space-between">
@@ -376,7 +401,7 @@ function Content() {
 
             <Box overflowX="auto">
 
-                <Table variant="simple" bg="white">
+                <Table variant="simple" bg="white" id="table_products">
                     <Thead>
                         <Tr>
                             {selectedColumns.map(col => {

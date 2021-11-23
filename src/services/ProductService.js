@@ -6,6 +6,18 @@ class ProductService {
     static urlProduct = SERVIDOR + '/products';
 
     static create = (data) => {
+        let sendData = {
+            name: data.name,
+            category: data.category,
+            quantity: data.quantity,
+            unit_price: data.unit_price,
+            description: data.description,
+            url_image: data.image
+        };
+        return axios.post(this.urlProduct, sendData);
+    }
+
+    static update = (data,productId) => {
 
         let sendData = {
             name: data.name,
@@ -15,37 +27,20 @@ class ProductService {
             description: data.description,
             url_image: data.image
         };
-        console.log("data", data)
-        console.log("sendData", sendData)
-        return axios.post(this.urlProduct, sendData);
-    }
-
-    static update = (data,userId) => {
-
-        let sendData = {
-            id: data.userId,
-            username: data.username,
-            password: data.password,
-            email: data.email,
-            name: data.name,
-            lastname: data.lastname,
-            role: data.role
-        };
-
         return axios.put(this.urlProduct, sendData);
     }
 
-    static delete = (userId) => {
+    static delete = (productId) => {
 
-        return axios.delete(this.urlProduct + "/" + userId);
+        return axios.delete(this.urlProduct + "/" + productId);
     }
 
     static list = () => {
         return axios.get(this.urlProduct);
     }
 
-    static listProduct = (userId) => {
-        return axios.get(this.urlProduct + "/" + userId);
+    static listProduct = (productId) => {
+        return axios.get(this.urlProduct + "/" + productId);
     }
 
 }
