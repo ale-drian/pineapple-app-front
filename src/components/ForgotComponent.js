@@ -52,7 +52,7 @@ import {
             _hover={{
               bg: 'black',
             }}>
-            Request Reset
+                Solicitar Nueva Contraseña
           </Button>
         </Stack>
       </Stack>

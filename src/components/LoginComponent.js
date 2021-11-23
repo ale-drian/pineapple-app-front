@@ -12,7 +12,8 @@ import {
   AvatarGroup,
   useBreakpointValue,
   IconProps,
-  Icon, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement
+  Icon, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement,
+  Link
 } from '@chakra-ui/react';
 
 
@@ -181,6 +182,11 @@ function Login() {
               <Button isLoading={isSubmitting} width="100%" type="submit" py={5} borderRadius="full" bg="#F2B705" colorScheme="yellow">
                 Login
               </Button>
+              <Text>
+              <Link color="teal.500"  href="/forgot">
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </Text>
             </Stack>
           </form>
 
