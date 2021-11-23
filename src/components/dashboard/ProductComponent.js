@@ -9,6 +9,8 @@ import {
 import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch,FaCartPlus } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import axios, { Axios } from 'axios';
+
 
 const columns = [
     { label: "ID", value: "id" },
@@ -29,6 +31,8 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
 
     const [valuePrice, setValuePrice] = useState(prod ? prod.unit_price : "0.00")
     const [displayImage, setDisplayImage] = useState(null)
+    const [imageSelected, setImageSelected] = useState("")
+    const [imageURL, setImageURL] = useState("")
     
     const {
         handleSubmit,
@@ -38,8 +42,10 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
 
     function handleDisplayImage(event){
         setDisplayImage(URL.createObjectURL(event.target.files[0]))
+        setImageSelected(event.target.files[0]);
     }
     function onSubmit(values, e) {
+        uploadImage();
         ProductService.create(values).then(result => {
             if (result.status === 201) {
               console.log("Pasó")
@@ -50,6 +56,17 @@ const CreateModal = ({ prod, title, nameButton, color, size }) => {
             console.log("error catch")
           });
           e.target.reset();
+    }
+    function uploadImage(){
+        const formData = new FormData();
+        formData.append("file",imageSelected);
+        formData.append("upload_preset","cbvwuanq");
+        axios.post( "https://api.cloudinary.com/v1_1/pineappleapp/image/upload",
+        formData).then((response)=>{
+            console.log(response);
+            console.log(response.data.public_id);
+            setImageURL("https://api.cloudinary.com/v1_1/pineappleapp/image/upload/"+response.data.public_id)
+        })
     }
     return (
         <div>
