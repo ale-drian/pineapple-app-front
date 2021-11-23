@@ -319,6 +319,15 @@ function Content() {
         }
     }
 
+    function handleOrder(type, column){
+        if(type == "asc"){
+            let sortedAsceding = listLocalUser.data.sort((a, b) => {
+                return a[column].toUpperCase() - b[column].toUpperCase();
+            });
+            setListLocalUser({data: sortedAsceding});
+        }
+    }
+
     return (
         <div>
             <h2>Users</h2>
@@ -352,8 +361,8 @@ function Content() {
                                             <Th>
                                                 <Stack direction={["column", "row"]} spacing="0px">
                                                     <Text mr={2}>{col.label}</Text>
-                                                    <button onClick={hola}><FaArrowDown /></button>
-                                                    <button onClick={hola}><FaArrowUp /></button>
+                                                    <button onClick={()=>handleOrder("des", col.value)}><FaArrowDown /></button>
+                                                    <button onClick={()=>handleOrder("asc", col.value)}><FaArrowUp /></button>
                                                 </Stack>
                                             </Th>
                                             : ''
