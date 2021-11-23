@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import React, {createContext, useContext, useEffect, useReducer, useState } from 'react';
 import Login from './components/LoginComponent';
+import Forgot from './components/ForgotComponent';
 import Home from './components/HomeComponent';
 import Dashboard from './components/dashboard/DashboardComponent';
 import Category from './components/dashboard/CategoryComponent';
@@ -36,6 +37,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<Home/>} />
+          <Route exact path="/forgot" element={<Forgot/>} />
             { user.logged ?
               <Route path="/dashboard" element={<Layout/>}>
                   <Route exact  path="/dashboard/" element={<Dashboard />} />
