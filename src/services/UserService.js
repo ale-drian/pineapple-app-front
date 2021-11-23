@@ -36,7 +36,7 @@ class UserService {
 
         let sendData = {
             username: data.username,
-            ...(data.password && {password: data.password}),
+            ...(data.password != "" && {password: data.password}),
             password: data.password,
             email: data.email,
             name: data.name,
