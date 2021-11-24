@@ -173,7 +173,8 @@ const Login = () => {
                 </InputGroup>
                 <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
               </FormControl>
-
+              <Text>Username: johnsmith</Text>
+              <Text>Contraseña: 1234</Text>
               <Button isLoading={isSubmitting} width="100%" type="submit" py={5} borderRadius="full" bg="#F2B705" colorScheme="yellow">
                 Login
               </Button>

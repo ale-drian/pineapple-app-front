@@ -1,71 +1,49 @@
-# Getting Started with Create React App
+# PEN PINEAPPLE APPLE PEN (PPAP)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Frontend en React
+El frontend fue desarrollado con React. 
 
-## Available Scripts
+#### Desarrollado por:
+- [Lucía Paulina Pereyra](https://github.com/luciapaulinapereyra) - Backend
+- [Alejandra Adrian Tejada](https://github.com/ale-drian) - FrondEnd
+- [Mariam Apaza Santillana](https://github.com/mapaza) - FronEnd
+- [Ariadna Eyzaguirre Cuellar](https://github.com/ariaeyza) - Diseño
+- [Sheyla Breña Sicha](https://github.com/ariaeyza) - Diseño
 
-In the project directory, you can run:
+## Resultados
 
-### `npm start`
+| Entregable | Ubicacion |
+| ------ | ------ |
+| Frontend |https://github.com/ale-drian/pineapple-app-front |
+| Backend | https://github.com/luciapaulinapereyra/pineapple-app-back |
+| Applicacion WEB | https://heroku |
+| API | https://heroku |
+| Base de Datos | https://holi |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+##### Para Cambiar la API 
+Dirigirse a:
+```sh
+cd src/services/Api.js
+// Indicar la URL de la API
+SERVIDOR="http://localhost:8080/api"
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation
+Clonar el proyecto e instalar las dependencias
+```sh
+git clone https://github.com/ale-drian/pineapple-app-front
+cd pineapple-app-front
+npm install
+npm start
+```
 
-### `npm test`
+## Dependencias
+- [React Router Dom](https://v5.reactrouter.com/web/guides/quick-start) - Manejo de Rutas
+- [React Hook Form](https://react-hook-form.com/) - Manejo de Formularios
+- [Chakra UI](https://chakra-ui.com/) - Construccion de la interfaz de Usuario
+- [Axios](https://www.npmjs.com/package/axios?__cf_chl_captcha_tk__=Xuu6cXSdGwtJQs5EpNobR_lxidMXNa4.E14nioPjcgw-1637774081-0-gaNycGzNB30) - Manejo de peticiones HTTP
+- [EmailJS Com](https://www.emailjs.com/docs/examples/reactjs/) - Envio de Correo para recuperación de contraseña
+- [React HTML Table to Excel](https://www.npmjs.com/package/react-html-table-to-excel) - Exportar tablas a Excel
+- [React Multiselect Checkboxes](https://www.npmjs.com/package/react-multiselect-checkboxes) - Mostrar u ocultar columnas en las tablas
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# pineapple-app-front
+## Video Demo

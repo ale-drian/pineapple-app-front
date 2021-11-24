@@ -16,6 +16,8 @@ import luImg from '../images/members/lucia.jpg'
 import marImg from '../images/members/mariam.jpg'
 import sheyImg from '../images/members/sheyla.jpg'
 import ariImg from '../images/members/ariadna.jpg'
+import ar from '../images/countries/argentina.png'
+import pe from '../images/countries/peru.png'
 
 // members data
 const members = [
@@ -26,7 +28,8 @@ const members = [
         imageName: "luImg",
         github: "https://github.com/luciapaulinapereyra",
         email: "luciapaulinapereyra@gmail.com",
-        linkedin: "https://www.linkedin.com/in/luc%C3%ADa-pereyra-9178621ba"
+        linkedin: "https://www.linkedin.com/in/luc%C3%ADa-pereyra-9178621ba",
+        country: 'AR'
     },
     {
         name: "Alejandra Adrian Tejada",
@@ -35,7 +38,8 @@ const members = [
         imageName: "aleImg",
         github: "https://github.com/ale-drian",
         email: "thalia.adrian@tecsup.edu.pe",
-        linkedin: "https://www.linkedin.com/in/alejandraadrian/"
+        linkedin: "https://www.linkedin.com/in/alejandraadrian/",
+        country: 'PE'
     },
     {
         name: "Mariam Apaza Santillana",
@@ -44,7 +48,8 @@ const members = [
         imageName: "marImg",
         github: "https://github.com/mapaza",
         email: "mariam.apaza@tecsup.edu.pe",
-        linkedin: "https://www.linkedin.com/in/mariam-dalia-apaza-santillana-0b7a49223/"
+        linkedin: "https://www.linkedin.com/in/mariam-dalia-apaza-santillana-0b7a49223/",
+        country: 'PE'
     },
     {
         name: "Ariadna Eyzaguirre Cuellar",
@@ -53,7 +58,8 @@ const members = [
         imageName: "ariImg",
         github: "https://github.com/ariaeyza",
         email: "ariadna.eyzaguirre@gmail.com",
-        linkedin: "https://www.linkedin.com/in/ariadnaeyzaguirre/"
+        linkedin: "https://www.linkedin.com/in/ariadnaeyzaguirre/",
+        country: 'PE'
     },
     {
         name: "Sheyla Breña Sicha",
@@ -62,16 +68,18 @@ const members = [
         imageName: "sheyImg",
         github: "https://github.com/ariaeyza",
         email: "sheylabrenasicha@gmail.com",
-        linkedin: "https://www.linkedin.com/in/sheylabre/"
+        linkedin: "https://www.linkedin.com/in/sheylabre/",
+        country: 'PE'
     }
 ]
 
 // Componente -> Card para mostrar detalle de cada miembro
-const MemberCard = ( member, image ) => {
+const MemberCard = ({ member, image}) => {
     return (
         <Center py={4}>
             <Box maxW={'320px'} minW={'280px'} w={'auto'} bg={useColorModeValue('white', 'gray.900')} boxShadow={'xl'} rounded={'lg'} p={4} textAlign={'center'}>
                 <Avatar size={'2xl'} src={image} alt={'Avatar Alt'} mb={4} pos={'relative'} />
+                <Avatar size={'sm'} src={member.country == 'PE' ? pe : ar} position={'relative'} top={0} right={8} border="white"/>
                 <Heading fontSize={'xl'} fontFamily={'body'}>
                     {member.name}
                 </Heading>
@@ -128,7 +136,6 @@ const Home = () => {
                             </Link>
                         </Stack>
                     </Center>
-                    
                     {/* Links Despliegue */}
                     <Center>
                         <Stack direction={["column", "row"]} spacing="20px">

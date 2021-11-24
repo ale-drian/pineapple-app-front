@@ -1,23 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ProductService from "../../services/ProductService";
 import {
-    Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, Image, Textarea, NumberInput, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, NumberInputField,
-    useBreakpointValue,
-    useColorModeValue,
-    Container,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay
+    Button, Input, Box, Table, Th, Tr, Td, Thead, Tbody, Stack, Flex, Text, InputRightElement, InputGroup, Image,  useBreakpointValue, useColorModeValue, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Center, useToast
 } from '@chakra-ui/react';
-import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch, FaCartPlus, FaFileDownload, FaCocktail } from 'react-icons/fa';
-import { useForm } from 'react-hook-form';
+import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch} from 'react-icons/fa';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import axios, { Axios } from 'axios';
 import { useAuthContext } from '../../App';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import ProductModal from './products/ProductModal';
 
 
 const columns = [
@@ -47,6 +37,7 @@ ReactHTMLTableToExcel.format = (s, c) => {
 };
 
 function ConfirmationDelete({ productId, listProductsReload }) {
+    const toast = useToast();
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const cancelRef = React.useRef()
@@ -56,11 +47,30 @@ function ConfirmationDelete({ productId, listProductsReload }) {
                 console.log("correct delete");
                 listProductsReload()
                 onClose();
+                toast({
+                    title: "Producto Eliminado",
+                    position: "top-right",
+                    isClosable: true,
+                    status: "success",
+                    duration: 3000,
+                })
             } else {
-                console.log("error_if")
+                toast({
+                    title: "Producto No Eliminado",
+                    position: "top-right",
+                    isClosable: true,
+                    status: "error",
+                    duration: 3000,
+                })
             }
         }).catch(error => {
-            console.log("error_catch")
+            toast({
+                title: "Producto No Eliminado",
+                position: "top-right",
+                isClosable: true,
+                status: "error",
+                duration: 3000,
+            })
         })
     }
     return (
@@ -95,220 +105,6 @@ function ConfirmationDelete({ productId, listProductsReload }) {
             </AlertDialog>
         </>
     )
-}
-
-const ProductModal = ({ prod, title, nameButton, color, size, productId, imageProduct, listProductsReload }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-
-    const formatPrice = (val) => `$` + parseFloat(val).toFixed(2)
-    const parsePrice = (val) => val.replace(/^\$/, "")
-    const [valuePrice, setValuePrice] = useState(prod ? prod.unit_price : "0.00")
-    const [displayImage, setDisplayImage] = useState(null)
-    const [imageSelected, setImageSelected] = useState("")
-    const [imageURL, setImageURL] = useState("")
-    
-    const {
-        handleSubmit,
-        register,
-        reset,
-        formState: { errors, isSubmitting }
-    } = useForm();
-    
-    useEffect(() => {
-        if(prod){
-            if(imageProduct != null){
-                setDisplayImage(imageProduct);
-            }else{
-                setDisplayImage("https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png")
-            }
-        }
-    }, []);
-    const handleDisplayImage = (event) => {
-        setDisplayImage(URL.createObjectURL(event.target.files[0]))
-    }
-    function onSubmit(values, e) {
-        console.log("values", values.image[0])
-        if (values.image[0]) {
-            const formData = new FormData();
-            formData.append("file", values.image[0]);
-            formData.append("upload_preset", "cbvwuanq");
-            axios.post("https://api.cloudinary.com/v1_1/pineappleapp/image/upload",
-                formData).then((response) => {
-                    let imgURL = "https://res.cloudinary.com/pineappleapp/image/upload/" + response.data.public_id + ".jpg";
-                    values.image = imgURL;
-
-                    if (productId == 0) {
-                        ProductService.create(values).then(result => {
-                            if (result.status === 201) {
-                                console.log("Pasó")
-                                listProductsReload();
-                                reset(prod);
-                                onClose()
-                            } else {
-                                console.log("error status")
-                            }
-                            listProductsReload();
-                        }).catch(error => {
-                            console.log("error catch")
-                        });
-                    } else {
-                        ProductService.update(values, productId).then(result => {
-                            if (result.status === 200) {
-                                console.log("correct update");
-                                listProductsReload();
-                                onClose()
-                            } else {
-                                //   setIsError(true);
-                            }
-                        }).catch(error => {
-                            // setIsError(true);
-                        })
-                    }
-                })
-        }else{
-            values.image = null
-            if (productId == 0) {
-                ProductService.create(values).then(result => {
-                    if (result.status === 201) {
-                        console.log("Pasó")
-                        listProductsReload();
-                        reset(prod);
-                        onClose()
-                    } else {
-                        console.log("error status")
-                    }
-                    listProductsReload();
-                }).catch(error => {
-                    console.log("error catch")
-                });
-            } else {
-                ProductService.update(values, productId).then(result => {
-                    if (result.status === 200) {
-                        console.log("correct update");
-                        listProductsReload();
-                        onClose()
-                    } else {
-                        //   setIsError(true);
-                    }
-                }).catch(error => {
-                    // setIsError(true);
-                })
-            }
-        }
-
-    }
-    return (
-        <div>
-            <Button colorScheme={color} size={size} onClick={onOpen}>{nameButton}</Button>
-
-            <Modal isOpen={isOpen} size="4xl" onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{title}</ModalHeader>
-                    <ModalCloseButton />
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalBody>
-                            <SimpleGrid columns={{ sm: 1, md: 2 }} spacing="40px">
-                                <Box>
-                                    <FormControl isInvalid={errors.name} isRequired mb={3}>
-                                        <FormLabel htmlFor="name" >Nombre</FormLabel>
-                                        <Input id="name" placeholder="Ingrese un coreeo electronico" defaultValue={prod ? prod.name : ""}
-                                            {...register("name", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
-                                            })}
-                                        />
-                                        <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl isInvalid={errors.description} mb={3}>
-                                        <FormLabel htmlFor="description" >Descripción</FormLabel>
-                                        <Textarea
-                                            id="description"
-                                            placeholder="Escribir la descripcion del producto"
-                                            size="sm"
-                                            defaultValue={prod ? prod.description : ""}
-                                            resize="none"
-                                            {...register("description")}
-                                        />
-                                        <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl isInvalid={errors.quantity} isRequired mb={3}>
-                                        <FormLabel htmlFor="quantity" >Cantidad</FormLabel>
-                                        <NumberInput defaultValue={prod ? prod.quantity : 0} min={0} clampValueOnBlur={false}
-                                        >
-                                            <NumberInputField id="quantity" placeholder="Cantidad"
-                                                {...register("quantity", {
-                                                    required: "Este campo es obligatorio"
-                                                })} />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
-                                        <FormErrorMessage>{errors.quantity && errors.quantity.message}</FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl isInvalid={errors.unit_price} isRequired mb={3}>
-                                        <FormLabel htmlFor="unit_price" >Precio Unitario</FormLabel>
-                                        <NumberInput min={0.00} step={0.1} precision={2}
-                                            onChange={(valueString) => setValuePrice((valueString))}
-                                            value={(valuePrice)}
-                                        >
-                                            {console.log("valuePrice", valuePrice)}
-                                            <NumberInputField id="unit_price" placeholder="Ingrese el precio del producto"
-                                                defaultValue={prod ? prod.unit_price : ""}
-                                                value={parseFloat(valuePrice)}
-                                                {...register("unit_price")} />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
-                                        <FormErrorMessage>{errors.unit_price && errors.unit_price.message}</FormErrorMessage>
-                                    </FormControl>
-
-                                </Box>
-                                <Box>
-                                    <FormControl isInvalid={errors.category} isRequired mb={3}>
-                                        <FormLabel htmlFor="category" >Categoria</FormLabel>
-                                        <Input id="category" placeholder="Ingrese un nombre" defaultValue={prod ? prod.category : ""}
-                                            {...register("category", {
-                                                required: "Este campo es obligatorio",
-                                                minLength: { value: 4, message: "El nombre debe contener al menos 4 caracteres" }
-                                            })}
-                                        />
-                                        <FormErrorMessage>{errors.category && errors.category.message}</FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl isInvalid={errors.image} mb={3}>
-                                        <FormLabel htmlFor="image" >Imagen</FormLabel>
-                                        <Input id="image" placeholder="Ingrese un nombre" type="file"
-                                            {...register("image")}
-                                            onChange={handleDisplayImage}
-                                        />
-                                        <Image
-                                            boxSize="200px"
-                                            objectFit="cover"
-                                            src={displayImage}
-                                        />
-                                        <FormErrorMessage>{errors.image && errors.image.message}</FormErrorMessage>
-                                    </FormControl>
-                                </Box>
-                            </SimpleGrid>
-                        </ModalBody>
-
-                        <ModalFooter>
-                            <Button mr={3} colorScheme="teal" isLoading={isSubmitting} type="submit">
-                                Guardar
-                            </Button>
-                            <Button colorScheme="blue" mr={3} onClick={onClose}>
-                                Cerrar
-                            </Button>
-                        </ModalFooter>
-                    </form>
-                </ModalContent>
-            </Modal>
-        </div>
-    )
-
 }
 
 function Search({ listProduct, setListLocalProduct }) {
@@ -541,47 +337,60 @@ function Content() {
                                     </>
                                 );
                             })}
-                            <Th>Acciones</Th>
+                            {
+                                user.role.id == 1 ?
+                                    <Th>Acciones</Th>
+                                    : ''
+                            }
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {listLocalProduct.data.map((prod) => {
-                            return (
-                                <Tr>
-                                    {selectedColumns.map(col => {
-                                        return (
-                                            <>{
-                                                col.value !== "*" ?
-                                                    (
-                                                        col.value === "url_image"
-                                                            ?
-                                                            <Td>
-                                                                <Image
-                                                                    boxSize="50px"
-                                                                    objectFit="cover"
-                                                                    src={prod[col.value]? prod[col.value]: "https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png"}
-                                                                    alt={prod.name}
-                                                                />
-                                                            </Td>
+                        {
+                            listLocalProduct.data.length > 0 ?
+                                listLocalProduct.data.map((prod) => {
+                                    return (
+                                        <Tr>
+                                            {selectedColumns.map(col => {
+                                                return (
+                                                    <>{
+                                                        col.value !== "*" ?
+                                                            (
+                                                                col.value === "url_image"
+                                                                    ?
+                                                                    <Td>
+                                                                        <Image
+                                                                            boxSize="50px"
+                                                                            objectFit="cover"
+                                                                            src={prod[col.value] ? prod[col.value] : "https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png"}
+                                                                            alt={prod.name}
+                                                                        />
+                                                                    </Td>
+                                                                    :
+                                                                    <Td>{prod[col.value]}</Td>
+                                                            )
                                                             :
-                                                            <Td>{prod[col.value]}</Td>
-                                                    )
-                                                    :
-                                                    ''
-                                            }
-                                            </>
-                                        )
-                                    })}
+                                                            ''
+                                                    }
+                                                    </>
+                                                )
+                                            })}
 
-                                    <Td>
-                                        <Button size="sm" p={0} m={0.5} >
-                                            <ProductModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} productId={prod["id"]} listProductsReload={listProductsReload} imageProduct={prod["url_image"]}/>
-                                        </Button>
-                                        <ConfirmationDelete listProductsReload={listProductsReload} productId={prod["id"]} />
-                                    </Td>
-                                </Tr>
-                            );
-                        })}
+                                            {
+                                                user.role.id == 1 ?
+                                                    <Td>
+                                                        <Button size="sm" p={0} m={0.5} >
+                                                            <ProductModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} productId={prod["id"]} listProductsReload={listProductsReload} imageProduct={prod["url_image"]} />
+                                                        </Button>
+                                                        <ConfirmationDelete listProductsReload={listProductsReload} productId={prod["id"]} />
+                                                    </Td>
+                                                    : ''
+                                            }
+                                        </Tr>
+                                    );
+                                })
+                            :
+                            <Tr h="40px"><Td colSpan={10}><Center w="100%"><Text>No hay productos</Text></Center></Td></Tr>
+                        }
                     </Tbody>
                 </Table>
             </Box>

@@ -1,9 +1,16 @@
-import React, { ReactNode } from 'react';
-import Layout from '../layout/dashboard/LayoutComponent';
+import React from 'react'; 
+import { useAuthContext } from '../../App';
+import { Box, Text } from '@chakra-ui/react';
 
 function Content(){
+    
+    const {user} = useAuthContext();
+
     return(
-        <p>Dashboard</p>
+        
+        <Box>
+            <Text fontSize={'xl'}>Bienvenido {user.name} {user.lastName}!</Text>
+        </Box>
     );
 }
 
