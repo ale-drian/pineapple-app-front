@@ -16,9 +16,8 @@ El frontend fue desarrollado con React.
 | ------ | ------ |
 | Frontend |https://github.com/ale-drian/pineapple-app-front |
 | Backend | https://github.com/luciapaulinapereyra/pineapple-app-back |
-| Applicacion WEB | https://heroku |
-| API | https://heroku |
-| Base de Datos | https://holi |
+| Applicacion WEB | https://ppap-app.herokuapp.com/ |
+| API | https://ppap-app-api.herokuapp.com/api/ |
 
 ##### Para Cambiar la API 
 Dirigirse a:
