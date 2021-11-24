@@ -14,7 +14,8 @@ const columns = [
     { label: "Nombre", value: "name" },
     { label: "Apellido", value: "lastName" },
     { label: "Correo", value: "email" },
-    { label: "Rol", value: "role" }
+    { label: "Rol", value: "role" },
+    { label: "Creación", value: "createdDate" }
 ]
 
 function Search({ listUser, setListLocalUser}) {
@@ -74,6 +75,7 @@ function Content() {
                     data: res.data.data,
                     loading: true
                 })
+                // console.log("DATA", res.data.data)
                 setListLocalUser({
                     data: res.data.data,
                     loading: true
@@ -151,6 +153,22 @@ function Content() {
             }
             setListLocalUser({data: sortedDescending});
         }
+    }
+
+    function formateDate (dateToFormat){
+        let date = new Date(dateToFormat);
+        let day = date.getDate();
+        day = day<10 ? "0"+day : day;
+        let month = date.getMonth() + 1;
+        month = month<10 ? "0"+month : month;
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        hours = hours<10 ? "0"+hours : hours;
+        let minutes = date.getMinutes();
+        minutes = minutes<10 ? "0"+minutes : minutes;
+
+        let dateFormat = `${day}/${month}/${year} ${hours}:${minutes}`;
+        return dateFormat;
     }
 
     return (
@@ -250,8 +268,12 @@ function Content() {
                                                                 <Badge colorScheme="green">Administrador</Badge> :
                                                                 <Badge colorScheme="purple">Usuario</Badge>
                                                             }</Td>
-                                                            :
-                                                            <Td>{user[col.value]}</Td>
+                                                            :(
+                                                                col.value == "createdDate" ?
+                                                                <Td>{formateDate(user[col.value])}</Td>
+                                                                :
+                                                                <Td>{user[col.value]}</Td>
+                                                            )
                                                     )
                                                     :
                                                     ''
