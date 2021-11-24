@@ -183,11 +183,11 @@ const Login = () => {
               </FormControl>
               <List spacing={2}>
               <ListItem>
-                <ListIcon as={AtSignIcon} color="green.500" />
+                <ListIcon as={AtSignIcon} color="teal" />
                 <strong>Username: </strong>johnsmith
               </ListItem> 
               <ListItem>
-                <ListIcon as={UnlockIcon} color="green.500" />
+                <ListIcon as={UnlockIcon} color="teal" />
                 <strong>Contraseña: </strong>1234
               </ListItem>  
             </List>
