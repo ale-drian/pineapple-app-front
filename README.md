@@ -38,7 +38,6 @@ npm start
 ```
 
 ## Dependencias
-### React Router Dom
 - [React Router Dom](https://v5.reactrouter.com/web/guides/quick-start) - Manejo de Rutas
 - [React Hook Form](https://react-hook-form.com/) - Manejo de Formularios
 - [Chakra UI](https://chakra-ui.com/) - Construccion de la interfaz de Usuario
@@ -46,4 +45,5 @@ npm start
 - [EmailJS Com](https://www.emailjs.com/docs/examples/reactjs/) - Envio de Correo para recuperación de contraseña
 - [React HTML Table to Excel](https://www.npmjs.com/package/react-html-table-to-excel) - Exportar tablas a Excel
 - [React Multiselect Checkboxes](https://www.npmjs.com/package/react-multiselect-checkboxes) - Mostrar u ocultar columnas en las tablas
+
 ## Video Demo
