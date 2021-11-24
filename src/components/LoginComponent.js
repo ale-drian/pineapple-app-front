@@ -52,8 +52,7 @@ const Login = () => {
         })
         navigate("/dashboard");
       } else {
-        console.log("result.data.error")
-        console.log(result.data.error)
+        // console.log(result.data.error)
         toast({
           title: "Creadenciales incorrectas",
           position: "top-right",
@@ -63,7 +62,7 @@ const Login = () => {
         })
       }
     }).catch(error => {
-      console.log(error);
+      // console.log(error);
       toast({
         title: "Algo salió mal. Revise las credenciales",
         position: "top-right",
