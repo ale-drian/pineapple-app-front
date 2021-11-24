@@ -10,7 +10,7 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
-    AlertDialogOverlay
+    AlertDialogOverlay, Center
 } from '@chakra-ui/react';
 import { FaEdit, FaTrash, FaArrowDown, FaArrowUp, FaSearch, FaCartPlus, FaFileDownload, FaCocktail } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
@@ -106,19 +106,19 @@ const ProductModal = ({ prod, title, nameButton, color, size, productId, imagePr
     const [displayImage, setDisplayImage] = useState(null)
     const [imageSelected, setImageSelected] = useState("")
     const [imageURL, setImageURL] = useState("")
-    
+
     const {
         handleSubmit,
         register,
         reset,
         formState: { errors, isSubmitting }
     } = useForm();
-    
+
     useEffect(() => {
-        if(prod){
-            if(imageProduct != null){
+        if (prod) {
+            if (imageProduct != null) {
                 setDisplayImage(imageProduct);
-            }else{
+            } else {
                 setDisplayImage("https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png")
             }
         }
@@ -165,7 +165,7 @@ const ProductModal = ({ prod, title, nameButton, color, size, productId, imagePr
                         })
                     }
                 })
-        }else{
+        } else {
             values.image = null
             if (productId == 0) {
                 ProductService.create(values).then(result => {
@@ -541,47 +541,60 @@ function Content() {
                                     </>
                                 );
                             })}
-                            <Th>Acciones</Th>
+                            {
+                                user.role.id == 1 ?
+                                    <Th>Acciones</Th>
+                                    : ''
+                            }
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {listLocalProduct.data.map((prod) => {
-                            return (
-                                <Tr>
-                                    {selectedColumns.map(col => {
-                                        return (
-                                            <>{
-                                                col.value !== "*" ?
-                                                    (
-                                                        col.value === "url_image"
-                                                            ?
-                                                            <Td>
-                                                                <Image
-                                                                    boxSize="50px"
-                                                                    objectFit="cover"
-                                                                    src={prod[col.value]? prod[col.value]: "https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png"}
-                                                                    alt={prod.name}
-                                                                />
-                                                            </Td>
+                        {
+                            listLocalProduct.data.length > 0 ?
+                                listLocalProduct.data.map((prod) => {
+                                    return (
+                                        <Tr>
+                                            {selectedColumns.map(col => {
+                                                return (
+                                                    <>{
+                                                        col.value !== "*" ?
+                                                            (
+                                                                col.value === "url_image"
+                                                                    ?
+                                                                    <Td>
+                                                                        <Image
+                                                                            boxSize="50px"
+                                                                            objectFit="cover"
+                                                                            src={prod[col.value] ? prod[col.value] : "https://res.cloudinary.com/pineappleapp/image/upload/v1637705740/ehrpk0cjtnl4i7smi3t7.png"}
+                                                                            alt={prod.name}
+                                                                        />
+                                                                    </Td>
+                                                                    :
+                                                                    <Td>{prod[col.value]}</Td>
+                                                            )
                                                             :
-                                                            <Td>{prod[col.value]}</Td>
-                                                    )
-                                                    :
-                                                    ''
-                                            }
-                                            </>
-                                        )
-                                    })}
+                                                            ''
+                                                    }
+                                                    </>
+                                                )
+                                            })}
 
-                                    <Td>
-                                        <Button size="sm" p={0} m={0.5} >
-                                            <ProductModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} productId={prod["id"]} listProductsReload={listProductsReload} imageProduct={prod["url_image"]}/>
-                                        </Button>
-                                        <ConfirmationDelete listProductsReload={listProductsReload} productId={prod["id"]} />
-                                    </Td>
-                                </Tr>
-                            );
-                        })}
+                                            {
+                                                user.role.id == 1 ?
+                                                    <Td>
+                                                        <Button size="sm" p={0} m={0.5} >
+                                                            <ProductModal nameButton={<FaEdit />} color="blue" size="sm" title="Editar Producto" prod={prod} productId={prod["id"]} listProductsReload={listProductsReload} imageProduct={prod["url_image"]} />
+                                                        </Button>
+                                                        <ConfirmationDelete listProductsReload={listProductsReload} productId={prod["id"]} />
+                                                    </Td>
+                                                    : ''
+                                            }
+                                        </Tr>
+                                    );
+                                })
+                            :
+                            <Tr h="40px"><Td colSpan={10}><Center w="100%"><Text>No hay productos</Text></Center></Td></Tr>
+                        }
                     </Tbody>
                 </Table>
             </Box>
