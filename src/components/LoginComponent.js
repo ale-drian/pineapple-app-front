@@ -1,77 +1,77 @@
-import {
-  Box,
-  Flex,
-  Stack,
-  Heading,
-  Text,
-  Container,
-  Input,
-  Button,
-  SimpleGrid,
-  Avatar,
-  AvatarGroup,
-  useBreakpointValue,
-  IconProps,
-  Icon, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement,
-  Link
-} from '@chakra-ui/react';
-
-
-import mySvg from '../images/background.png';
-import svg2 from '../bg-login4.png';
-import logo from '../images/logo_large.png';
-import bgLogin from '../images/bg-login.svg';
-import bgLogin2 from '../images/bg-login2.svg';
+// Import React 
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useAuthContext } from '../App';
-import UserService from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
+// Import services
+import { useAuthContext } from '../App';
 import { types } from '../auth/authReducer';
+import UserService from '../services/UserService';
+// Import Designe 
+import {
+  Box, Stack, Heading, Text, Container, Input, Button, SimpleGrid, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement, Link, useToast
+} from '@chakra-ui/react';
 
+// Import Icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+// Import Images 
+import mySvg from '../images/background.png';
+import svg2 from '../bg-login4.png';
 
-function Login() {
-  
-  const navigate = useNavigate();
-  const [show, setShow] = useState(false)
-  const handleClick = () => setShow(!show)
+// Component Login
+const Login = () => {
 
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const navigate = useNavigate(); //Navegacion Route
+  const [show, setShow] = useState(false) //Mostrar ocultar contraseña
+  const handleClick = () => setShow(!show) //Mostrar ocultar contraseña
 
   const {
     dispatch
-  } = useAuthContext();
+  } = useAuthContext(); //Contexto Global de autenticacion
+
+  const toast = useToast(); //Hook de chacra para el manejo de toast
 
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
-  } = useForm();
+  } = useForm(); //manejo de formularios con react-hook-form
 
   function onSubmit(data, e) {
-    console.log("data");
-    console.log(data);
     UserService.login(data).then(result => {
-      if (result.status === 200) {
+      if (!result.error && result.status === 200) {
+        toast({
+          title: "Login Correcto",
+          position: "top-right",
+          isClosable: true,
+          status: "success",
+          duration: 3000,
+        })
         dispatch({
             type: types.login,
             payload: result.data.data
         })
-        setLoggedIn(true);
-
-        console.log("Correcto")
         navigate("/dashboard");
       } else {
-        setIsError(true);
-        console.log("ERRORR")
+        console.log("result.data.error")
+        console.log(result.data.error)
+        toast({
+          title: "Creadenciales incorrectas",
+          position: "top-right",
+          isClosable: true,
+          status: "error",
+          duration: 3000,
+        })
       }
     }).catch(error => {
-      setIsError(true);
       console.log(error);
+      toast({
+        title: "Algo salió mal. Revise las credenciales",
+        position: "top-right",
+        isClosable: true,
+        status: "error",
+        duration: 3000,
+      })
     });
-    e.target.reset(); //borra el contenido de los inputs
   }
 
   return (
@@ -152,11 +152,7 @@ function Login() {
                     color: 'gray.500',
                   }}
                   {...register("username", {
-                    required: "Este campo es obligatorio",
-                    // pattern: {
-                    //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    //   message: "Escriba un correo valido"
-                    // }
+                    required: "Este campo es obligatorio"
                   })}
                 />
 
