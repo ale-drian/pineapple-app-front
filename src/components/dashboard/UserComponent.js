@@ -187,7 +187,7 @@ function Content() {
                 bg={useColorModeValue('gray.300', 'gray.900')}
                 borderRadius={20}>
                 <Flex
-                flex={{ base: 1, md: 'auto' }}
+                
                 ml={{ base: -2 }}
                 display={{ base: 'flex', md: 'none' }}> 
                 </Flex>

@@ -252,7 +252,7 @@ function Content() {
                 <Flex
                     color={useColorModeValue('gray.600', 'white')}
                     minH={'60px'}
-                    py={{ base: 2 }}
+                    pr={{ base: 2 }}
                     px={{ base: 4 }}
                     my={4}
                     borderBottom={4}
@@ -262,7 +262,7 @@ function Content() {
                     bg={useColorModeValue('gray.300', 'gray.900')}
                     borderRadius={20}>
                     <Flex
-                        flex={{ base: 1, md: 'auto' }}
+                       
                         ml={{ base: -2 }}
                         display={{ base: 'flex', md: 'none' }}>
                     </Flex>
@@ -272,7 +272,8 @@ function Content() {
                             fontFamily={'heading'}
                             color="gray"
                             color={useColorModeValue('gray.800', 'white')}
-                            fontSize="20px">
+                            fontSize="20px"
+                           >
                             <strong>  Inventario de Productos</strong>
                         </Text>
 
