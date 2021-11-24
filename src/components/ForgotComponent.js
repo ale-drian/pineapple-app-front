@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, history} from 'react';
 import {
     Button,
     FormControl,
@@ -17,6 +17,7 @@ import {
     import emailjs from 'emailjs-com';
     import UserService from '../services/UserService';
 
+
   function Forgot() {
     var val = Math.floor(Math.random()*90000) + 10000;
     const { isOpen: isFirstModalOpen , onOpen: onFirstModalOpen, onClose: onFirstModalClose } = useDisclosure()
@@ -26,11 +27,13 @@ import {
     const [userEmail, setUserEmail] = useState();
     const [newPassword, setNewPassword] = useState();
     const [user, setUser] = useState({});
+    const [flag, setFlag] = useState(false);
 
     useEffect( () =>
         UserService.listUserByEmail(userEmail).then(res => {
             if (res.data.status === 200) {
                 setUser( res.data.data)
+                setFlag(true)
             } else {
                 console.log("no se encontro coincidencias");
             }
@@ -40,8 +43,10 @@ import {
             console.log(err);
         }));
 
-     function sendEmail(event) { 
-        emailjs.init('user_7zXitI5CX8W3YrCmA5ZaF')
+     function sendEmail(event) {
+         
+        if(userEmail){
+            emailjs.init('user_7zXitI5CX8W3YrCmA5ZaF')
         event.preventDefault();
      
         const serviceID = 'default_service';
@@ -49,26 +54,44 @@ import {
      
         emailjs.sendForm(serviceID, templateID,event.target, 'user_7zXitI5CX8W3YrCmA5ZaF')
          .then(() => {
-           
-           alert('Hemos enviado el email. Revisa tu correo!');
-           console.log("user", user);
+           if(flag == true){
+                console.log("user", user);
+                alert('Hemos enviado el email. Revisa tu correo!');
+                onFirstModalOpen();
+                
+           }else{
+                alert('El correo no se encuentra asociado a una cuenta en la aplicación.');
+                console.log("user", user); 
+           }
+          
            
          }, (err) => {
            
            alert(JSON.stringify(err));
          });
+        }else{
+            alert("Ingrese el correo al cuál enviaremos el código")
+        }
+       
       
      }
 
     function validateResetCode() {
-        console.log(ResetCode)
-        console.log(valueI)
-        const stringcode = valueI.toString();
-        if(ResetCode == stringcode){
-            //console.log("igualess")   
-            onSecondModalOpen();
-        }else{
-            //console.log("diferentess")
+        if (valueI){
+            console.log(ResetCode)
+            console.log(valueI)
+            const stringcode = valueI.toString();
+            if(ResetCode == stringcode){
+                //console.log("igualess")   
+                onSecondModalOpen();
+            }else{
+                alert('El código ingresado no es el correcto. Inténtelo nuevamente');
+                //console.log("diferentess")
+            }
+        }
+        
+        else{
+            alert('Ingrese el código enviado a su correo.');
         }
         }
 
@@ -81,7 +104,8 @@ import {
             console.log(parameters);
             UserService.updatePassword(parameters, user.id).then(result => {
                 if (result.status === 200) {
-                  console.log("correct update");
+                    alert('Su contraseña ha sido actualizada correctamente!');
+                    window.location='/login';
                 } else {
                 //   setIsError(true);
                 }
@@ -143,8 +167,6 @@ import {
             }}>
                 Solicitar Nueva Contraseña
           </Button>
-          <Button colorScheme="blackAlpha" onClick={onFirstModalOpen}>Ingresar Código de Recuperación</Button>
-         
         </Stack>
         </form>
       </Stack>
