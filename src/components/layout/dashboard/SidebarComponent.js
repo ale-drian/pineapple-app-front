@@ -46,7 +46,7 @@ const NavItem = ({ icon, name, toRef, ...rest }) => {
     return (
         <Link to={toRef} style={{ textDecoration: 'none' }} >
             <Flex
-                align="center" p="4" mx="4" borderRadius="lg" role="group" cursor="pointer" color="white" 
+                align="center" p="4" mx="4" borderRadius="lg" role="group" cursor="pointer" color="black" 
                 _hover={{
                     bg: 'black',
                     color: 'white',
