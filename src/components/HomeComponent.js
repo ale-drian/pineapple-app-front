@@ -1,102 +1,77 @@
+// Import React 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Center, AspectRatio, Image, Box, Text, 
-    Heading,
-    Avatar,
-    Stack,
-    Link,
-    Badge,
-    SimpleGrid,
-    useColorModeValue,} from '@chakra-ui/react';
 import { useAuthContext } from '../App';
-import pmlogo from '../images/logo.jpeg';
-import { FaGithub , FaLinkedinIn, FaGoogle, FaRegEnvelope} from "react-icons/fa";
+// Import Designe 
+import { 
+    Button, Center, AspectRatio, Image, Box, Text, Heading, Avatar, Stack, Link, useColorModeValue
+} from '@chakra-ui/react';
+// Import Icons 
+import { FaGithub, FaLinkedinIn, FaGoogle } from "react-icons/fa";
 import { GrHeroku } from "react-icons/gr";
+// Import Images 
+import pmlogo from '../images/logo.jpeg';
 import aleImg from '../images/members/ale.jpg'
 import luImg from '../images/members/lucia.jpg'
 import marImg from '../images/members/mariam.jpg'
 import sheyImg from '../images/members/sheyla.jpg'
 import ariImg from '../images/members/ariadna.jpg'
 
+// members data
 const members = [
     {
         name: "Lucía Paulina Pereyra",
         skills: "Back End",
-        description: "Hola",
-        image: {luImg},
+        image: { luImg },
         imageName: "luImg",
         github: "https://github.com/luciapaulinapereyra",
         email: "luciapaulinapereyra@gmail.com",
-        linkedin: "https://www.linkedin.com/in/luc%C3%ADa-pereyra-9178621ba"             
+        linkedin: "https://www.linkedin.com/in/luc%C3%ADa-pereyra-9178621ba"
     },
     {
         name: "Alejandra Adrian Tejada",
         skills: "Front End",
-        description: "Hola",
-        image: {aleImg},
+        image: { aleImg },
         imageName: "aleImg",
         github: "https://github.com/ale-drian",
         email: "thalia.adrian@tecsup.edu.pe",
-        linkedin: "https://www.linkedin.com/in/alejandraadrian/"            
+        linkedin: "https://www.linkedin.com/in/alejandraadrian/"
     },
     {
         name: "Mariam Apaza Santillana",
         skills: "Front End",
-        description: "Hola",
-        image: {marImg},
+        image: { marImg },
         imageName: "marImg",
         github: "https://github.com/mapaza",
         email: "mariam.apaza@tecsup.edu.pe",
-        linkedin: "https://www.linkedin.com/in/mariam-dalia-apaza-santillana-0b7a49223/"            
+        linkedin: "https://www.linkedin.com/in/mariam-dalia-apaza-santillana-0b7a49223/"
     },
     {
         name: "Ariadna Eyzaguirre Cuellar",
         skills: "Diseño",
-        description: "Hola",
-        image: {ariImg},
+        image: { ariImg },
         imageName: "ariImg",
         github: "https://github.com/ariaeyza",
         email: "ariadna.eyzaguirre@gmail.com",
-        linkedin: "https://www.linkedin.com/in/ariadnaeyzaguirre/"            
+        linkedin: "https://www.linkedin.com/in/ariadnaeyzaguirre/"
     },
     {
         name: "Sheyla Breña Sicha",
         skills: "Diseño",
-        description: "Hola",
-        image: {sheyImg},
+        image: { sheyImg },
         imageName: "sheyImg",
         github: "https://github.com/ariaeyza",
         email: "sheylabrenasicha@gmail.com",
-        linkedin: "https://www.linkedin.com/in/sheylabre/"            
+        linkedin: "https://www.linkedin.com/in/sheylabre/"
     }
-    // {
-    //     name: "",
-    //     description: "",
-    //     image: "",
-    //     github: "",
-    //     email: ""                
-    // }
 ]
 
-function SocialProfileSimple({member, image}) {
+// Componente -> Card para mostrar detalle de cada miembro
+const MemberCard = ( member, image ) => {
     return (
         <Center py={4}>
-            <Box
-                maxW={'320px'}
-                minW={'280px'}
-                w={'auto'}
-                bg={useColorModeValue('white', 'gray.900')}
-                boxShadow={'xl'}
-                rounded={'lg'}
-                p={4}
-                textAlign={'center'}>
-                <Avatar
-                    size={'2xl'}
-                    src={image}
-                    alt={'Avatar Alt'}
-                    mb={4}
-                    pos={'relative'}
-                />
+            <Box maxW={'320px'} minW={'280px'} w={'auto'} bg={useColorModeValue('white', 'gray.900')} boxShadow={'xl'} rounded={'lg'} p={4} textAlign={'center'}>
+                <Avatar size={'2xl'} src={image} alt={'Avatar Alt'} mb={4} pos={'relative'} />
                 <Heading fontSize={'xl'} fontFamily={'body'}>
                     {member.name}
                 </Heading>
@@ -104,18 +79,22 @@ function SocialProfileSimple({member, image}) {
                     {member.skills}
                 </Text>
                 <Stack align={'center'} justify={'center'} direction={'row'} mt={2}>
-                    <Link isExternal href={member.linkedin}><Button bgColor="#ff5757" color="white" _hover={{bgColor:"red"}}><FaLinkedinIn/></Button></Link>
-                    <Link isExternal href={member.github}><Button bgColor="#ff5757" color="white" _hover={{bgColor:"red"}}><FaGithub/></Button></Link>
-                    <Link isExternal href={"mailto:"+member.email}><Button bgColor="#ff5757" color="white" _hover={{bgColor:"red"}}><FaGoogle/></Button></Link>
+                    <Link isExternal href={member.linkedin}><Button bgColor="#ff5757" color="white" _hover={{ bgColor: "red" }}><FaLinkedinIn /></Button></Link>
+                    <Link isExternal href={member.github}><Button bgColor="#ff5757" color="white" _hover={{ bgColor: "red" }}><FaGithub /></Button></Link>
+                    <Link isExternal href={"mailto:" + member.email}><Button bgColor="#ff5757" color="white" _hover={{ bgColor: "red" }}><FaGoogle /></Button></Link>
                 </Stack>
             </Box>
         </Center>
     );
 }
 
-function Home() {
+//Componente principal
+const Home = () => {
+    //Hook para navegar entre las rutas de route
     const navigate = useNavigate();
+    //Hook contexto para variables globales (autenticacion)
     const { user } = useAuthContext();
+    //Navegar al Login o Dashboard
     const handleClickLogin = () => navigate('/login');
     const handleClickDashboard = () => navigate('/dashboard');
     return (
@@ -132,57 +111,60 @@ function Home() {
                     <Center my={10}>
                         {
                             user.logged ?
-                                <Button marginBottom="1.5rem" fontSize="2xl" h="48px" w="40%" backgroundColor="#ff5757" _hover={{bgColor:"red"}} color="white" mx={4} onClick={handleClickDashboard}>Dashboard</Button>
+                                <Button marginBottom="1.5rem" fontSize="2xl" h="48px" w="40%" backgroundColor="#ff5757" _hover={{ bgColor: "red" }} color="white" mx={4} onClick={handleClickDashboard}>Dashboard</Button>
                                 :
-                                <Button marginBottom="1.5rem" fontSize="2xl" h="48px" w="40%" backgroundColor="#ff5757" _hover={{bgColor:"red"}} color="white" mx={4} onClick={handleClickLogin}>Login</Button>
+                                <Button marginBottom="1.5rem" fontSize="2xl" h="48px" w="40%" backgroundColor="#ff5757" _hover={{ bgColor: "red" }} color="white" mx={4} onClick={handleClickLogin}>Login</Button>
                         }
                     </Center>
+                    {/* Links Github */}
                     <Center mb={5}>
                         <Stack direction={["column", "row"]} spacing="20px">
 
                             <Link href="https://github.com/ale-drian/pineapple-app-front" isExternal h="48px">
-                                <Button leftIcon={<FaGithub />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{bgColor:"black"}} mx={2} > GitHub Front </Button>
+                                <Button leftIcon={<FaGithub />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > GitHub Front </Button>
                             </Link>
                             <Link href="https://github.com/luciapaulinapereyra/pineapple-app-back" isExternal h="48px">
-                                <Button leftIcon={<FaGithub />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{bgColor:"black"}} mx={2} > GitHub Back</Button>
+                                <Button leftIcon={<FaGithub />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > GitHub Back</Button>
                             </Link>
                         </Stack>
                     </Center>
+                    
+                    {/* Links Despliegue */}
                     <Center>
                         <Stack direction={["column", "row"]} spacing="20px">
 
                             <Link href="https://github.com/ale-drian/pineapple-app-front" isExternal h="48px">
-                                <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{bgColor:"black"}} mx={2} > Heroku App </Button>
+                                <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > Heroku App </Button>
                             </Link>
                             <Link href="https://github.com/luciapaulinapereyra/pineapple-app-back" isExternal h="48px">
-                                <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{bgColor:"black"}} mx={2} > Heroku API </Button>
+                                <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > Heroku API </Button>
                             </Link>
                         </Stack>
                     </Center>
 
                 </Box>
             </Center>
+            {/* Muestra nuestro equipo */}
             <Center w="100%" minH="100vh" backgroundColor="#F2B70f" >
                 <Box p={4} pt={10}>
 
-                <Heading w="100%" fontSize="4xl" mb="4" textAlign="center" color="white"> NUESTRO EQUIPO</Heading>
-                
-                    <Stack direction={{ base: 'column', lg: 'row' , md:'col'}}
-                spacing={{ base: 4, md: 4, lg: 10 }}>
+                    <Heading w="100%" fontSize="4xl" mb="4" textAlign="center" color="white"> NUESTRO EQUIPO</Heading>
 
-                            <SocialProfileSimple member={members[0]} image={members[0].image[members[0].imageName]}/>
-                            <SocialProfileSimple member={members[1]} image={members[1].image[members[1].imageName]}/>
-                            <SocialProfileSimple member={members[2]} image={members[2].image[members[2].imageName]}/>
-                </Stack>
-                <Center>
+                    <Stack direction={{ base: 'column', lg: 'row', md: 'col' }}
+                        spacing={{ base: 4, md: 4, lg: 10 }}>
+                        <MemberCard member={members[0]} image={members[0].image[members[0].imageName]} />
+                        <MemberCard member={members[1]} image={members[1].image[members[1].imageName]} />
+                        <MemberCard member={members[2]} image={members[2].image[members[2].imageName]} />
+                    </Stack>
+                    <Center>
 
-                    <Stack direction={{ base: 'column', lg: 'row' }}
-                spacing={{ base: 4, md: 4, lg: 10 }}>
-                            <SocialProfileSimple member={members[3]} image={members[3].image[members[3].imageName]}/>
-                            <SocialProfileSimple member={members[4]} image={members[4].image[members[4].imageName]}/>
-                </Stack>
-                </Center>
-              </Box>
+                        <Stack direction={{ base: 'column', lg: 'row' }}
+                            spacing={{ base: 4, md: 4, lg: 10 }}>
+                            <MemberCard member={members[3]} image={members[3].image[members[3].imageName]} />
+                            <MemberCard member={members[4]} image={members[4].image[members[4].imageName]} />
+                        </Stack>
+                    </Center>
+                </Box>
             </Center>
         </>
     );
