@@ -33,7 +33,7 @@ import {
 } from 'react-icons/fa';
 import logo from '../../../images/logo_large.png';
 import mySvg from '../../../images/background.png';
-import svg2 from '../../../images/user-header.png';
+import svg2 from '../../../images/bg-4.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../App';
 import { types } from '../../../auth/authReducer';
@@ -53,7 +53,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
             ml={{ base: 0, md: 60 }}
             px={{ base: 4, md: 4 }}
             height="20"
-            alignItems="center"
+            alignItems="center"  
             backgroundImage={`url(${svg2})`}
             backgroundSize="cover" backgroundRepeat="no-repeat"
             backgroundPosition='center'
@@ -73,6 +73,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 display={{ base: 'flex', md: 'none' }}
                 width="200px"
                 src={logo}
+                borderRadius="8px"
                 alt="Inicia Sesión"
             />
 

@@ -52,12 +52,13 @@ const Sidebar = ({ onClose,LinkItems, ...rest }) => {
             w={{ base: 'full', md: 60 }}
             pos="fixed"
             h="full"
-            bgColor="#FF5757"
+            bgColor="#f2b705"
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
                 <Image
                     width="200px"
                     src={logo}
+                    borderRadius="8px"
                     alt="Inicia Sesión"
                 />
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
@@ -81,10 +82,10 @@ const NavItem = ({ icon, name, toRef, ...rest }) => {
                 borderRadius="lg"
                 role="group"
                 cursor="pointer"
-                color="white"
+                color="black"
                 _hover={{
-                    bg: 'white',
-                    color: 'black',
+                    bg: 'black',
+                    color: 'white',
                 }}
                 {...rest}>
                 {icon && (
@@ -92,7 +93,7 @@ const NavItem = ({ icon, name, toRef, ...rest }) => {
                         mr="4"
                         fontSize="16"
                         _groupHover={{
-                            color: 'black',
+                            color: 'white',
                         }}
                         as={icon}
                     />
