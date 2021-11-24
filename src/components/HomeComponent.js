@@ -105,7 +105,6 @@ const Home = () => {
     //Navegar al Login o Dashboard
     const handleClickLogin = () => navigate('/login');
     const handleClickDashboard = () => navigate('/dashboard');
-    console.log("members",members)
     return (
         <>
             <Center w="100%" minH="100vh" backgroundColor="#f5cf64" >
