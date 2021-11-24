@@ -3,42 +3,29 @@ import {
     IconButton,
     Avatar,
     Box,
-    CloseButton,
     Flex,
     HStack,
     VStack,
-    Icon,
     useColorModeValue,
-    Drawer,
-    DrawerContent,
     Text,
-    useDisclosure,
-    BoxProps,
-    FlexProps,
     Menu,
     MenuButton,
-    MenuDivider,
     MenuItem,
     MenuList,
-    Center,
     Image
 } from '@chakra-ui/react';
 import {
-    FaHome,
-    FaUserFriends,
-    FaBoxOpen,
     FaBars,
-    FaBell,
     FaChevronDown,
 } from 'react-icons/fa';
 import logo from '../../../images/logo_large.png';
-import mySvg from '../../../images/background.png';
 import svg2 from '../../../images/user-header.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../App';
 import { types } from '../../../auth/authReducer';
 
-const MobileNav = ({ onOpen, ...rest }) => {
+// Header responsive
+const Header = ({ onOpen, ...rest }) => {
     
   const navigate = useNavigate();
     const {user, dispatch} = useAuthContext();
@@ -116,4 +103,4 @@ const MobileNav = ({ onOpen, ...rest }) => {
         </Flex>
     );
 };
-export default MobileNav;
+export default Header;

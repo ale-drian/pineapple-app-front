@@ -1,47 +1,15 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import {
-    IconButton,
-    Avatar,
-    Box,
-    CloseButton,
-    Flex,
-    HStack,
-    VStack,
-    Icon,
-    useColorModeValue,
-    Drawer,
-    DrawerContent,
-    Text,
-    useDisclosure,
-    BoxProps,
-    FlexProps,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
-    Center,
-    Image
+    Box, CloseButton, Flex, Icon, useColorModeValue, Image
 } from '@chakra-ui/react';
-import {
-    FaHome,
-    FaUserFriends,
-    FaBoxOpen,
-    FaBars,
-    FaBell,
-    FaChevronDown,
-} from 'react-icons/fa';
+
 import logo from '../../../images/logo_large.png';
 
-import { useNavigate } from 'react-router-dom';
 import {
-  BrowserRouter as Router,
-  Switch,
   Link,
-  Route,
-  Routes
 } from "react-router-dom";
 
+//Component sidebar a la izquierda y responsive
 const Sidebar = ({ onClose,LinkItems, ...rest }) => {
     return (
         <Box
@@ -55,11 +23,13 @@ const Sidebar = ({ onClose,LinkItems, ...rest }) => {
             bgColor="#FF5757"
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+                <Link to="/">
                 <Image
                     width="200px"
                     src={logo}
-                    alt="Inicia Sesión"
+                    alt="Logo"
                 />
+                </Link>
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
@@ -70,27 +40,19 @@ const Sidebar = ({ onClose,LinkItems, ...rest }) => {
     );
 };
 
-
+// Component item del menu de navegacion
 const NavItem = ({ icon, name, toRef, ...rest }) => {
     return (
         <Link to={toRef} style={{ textDecoration: 'none' }} >
             <Flex
-                align="center"
-                p="4"
-                mx="4"
-                borderRadius="lg"
-                role="group"
-                cursor="pointer"
-                color="white"
+                align="center" p="4" mx="4" borderRadius="lg" role="group" cursor="pointer" color="white" 
                 _hover={{
                     bg: 'white',
                     color: 'black',
                 }}
                 {...rest}>
                 {icon && (
-                    <Icon
-                        mr="4"
-                        fontSize="16"
+                    <Icon mr="4" fontSize="16"
                         _groupHover={{
                             color: 'black',
                         }}
