@@ -67,7 +67,7 @@ const members = [
 ]
 
 // Componente -> Card para mostrar detalle de cada miembro
-const MemberCard = ( member, image ) => {
+const MemberCard = ({ member, image}) => {
     return (
         <Center py={4}>
             <Box maxW={'320px'} minW={'280px'} w={'auto'} bg={useColorModeValue('white', 'gray.900')} boxShadow={'xl'} rounded={'lg'} p={4} textAlign={'center'}>
@@ -97,6 +97,7 @@ const Home = () => {
     //Navegar al Login o Dashboard
     const handleClickLogin = () => navigate('/login');
     const handleClickDashboard = () => navigate('/dashboard');
+    console.log("members",members)
     return (
         <>
             <Center w="100%" minH="100vh" backgroundColor="#f5cf64" >
@@ -128,7 +129,6 @@ const Home = () => {
                             </Link>
                         </Stack>
                     </Center>
-                    
                     {/* Links Despliegue */}
                     <Center>
                         <Stack direction={["column", "row"]} spacing="20px">
