@@ -9,16 +9,21 @@ import {
     Text,
     useColorModeValue,
     Modal, ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,ModalBody,
-    FormLabel, ModalFooter, useDisclosure
+    FormLabel, ModalFooter, useDisclosure, useToast
   } from '@chakra-ui/react';
     import mySvg from '../images/background.png';
     import svg2 from '../bg-login4.png';
     import { v1 as uuidv1 } from 'uuid';
     import emailjs from 'emailjs-com';
     import UserService from '../services/UserService';
+    import { useNavigate } from 'react-router-dom';
 
 
   function Forgot() {
+
+    const navigate = useNavigate(); //Navegacion Route
+    const toast = useToast(); //Hook de chacra para el manejo de toast
+
     var val = Math.floor(Math.random()*90000) + 10000;
     const { isOpen: isFirstModalOpen , onOpen: onFirstModalOpen, onClose: onFirstModalClose } = useDisclosure()
     const { isOpen: isSecondModalOpen , onOpen: onSecondModalOpen, onClose: onSecondModalClose } = useDisclosure()
@@ -44,8 +49,7 @@ import {
         }));
 
      function sendEmail(event) {
-         
-        if(userEmail){
+    
             emailjs.init('user_7zXitI5CX8W3YrCmA5ZaF')
         event.preventDefault();
      
@@ -55,24 +59,32 @@ import {
         emailjs.sendForm(serviceID, templateID,event.target, 'user_7zXitI5CX8W3YrCmA5ZaF')
          .then(() => {
            if(flag == true){
-                console.log("user", user);
-                alert('Hemos enviado el email. Revisa tu correo!');
+            toast({
+              title: "Hemos enviado el código. Revisa tu correo!",
+              position: "top-right",
+              isClosable: true,
+              status: "success",
+              duration: 3000,
+            })
+               
                 onFirstModalOpen();
                 
            }else{
-                alert('El correo no se encuentra asociado a una cuenta en la aplicación.');
-                console.log("user", user); 
+            toast({
+              title: "El correo no se encuentra asociado a una cuenta en la aplicación",
+              position: "top-right",
+              isClosable: true,
+              status: "error",
+              duration: 3000,
+            })
+               
            }
           
            
          }, (err) => {
            
            alert(JSON.stringify(err));
-         });
-        }else{
-            alert("Ingrese el correo al cuál enviaremos el código")
-        }
-       
+         });   
       
      }
 
@@ -85,13 +97,25 @@ import {
                 //console.log("igualess")   
                 onSecondModalOpen();
             }else{
-                alert('El código ingresado no es el correcto. Inténtelo nuevamente');
-                //console.log("diferentess")
+              toast({
+                title: "El código ingresado no es el correcto. Inténtelo nuevamente",
+                position: "top-right",
+                isClosable: true,
+                status: "error",
+                duration: 3000,
+              })
+               
             }
         }
         
         else{
-            alert('Ingrese el código enviado a su correo.');
+            toast({
+              title: "Ingrese el código enviado a su correo.",
+              position: "top-right",
+              isClosable: true,
+              status: "warning",
+              duration: 3000,
+            })
         }
         }
 
@@ -104,8 +128,15 @@ import {
             console.log(parameters);
             UserService.updatePassword(parameters, user.id).then(result => {
                 if (result.status === 200) {
-                    alert('Su contraseña ha sido actualizada correctamente!');
-                    window.location='/login';
+                  toast({
+                    title: "Su contraseña ha sido actualizada correctamente!",
+                    position: "top-right",
+                    isClosable: true,
+                    status: "success",
+                    duration: 3000,
+                  })
+                   
+                    navigate("/login");
                 } else {
                 //   setIsError(true);
                 }
@@ -153,7 +184,7 @@ import {
             _placeholder={{ color: 'gray.500' }}
             type="email"
             name="user_email"
-            onChange={e => setUserEmail(e.target.value)}
+            onChange={e => setUserEmail(e.target.value)} required
           />
           <input name="code" type="hidden"  value={ResetCode}></input>
         </FormControl>
