@@ -22,7 +22,10 @@ export const useAuthContext = () => useContext(AuthContext);
 
 const init = () => JSON.parse(localStorage.getItem('user')) || { logged:false }
 
+document.title = "Pineapple App"
+
 function App() {
+  
   
   const [user, dispatch] = useReducer(authReducer,{},init)
   const [login, setlogin] = useState(false);

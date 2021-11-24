@@ -8,8 +8,10 @@ import { types } from '../auth/authReducer';
 import UserService from '../services/UserService';
 // Import Designe 
 import {
-  Box, Stack, Heading, Text, Container, Input, Button, SimpleGrid, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement, Link, useToast
+  Box, Stack, Heading, Text, Container, Input, Button, SimpleGrid, Center, Image, FormControl, FormErrorMessage, InputGroup, InputRightElement, Link, useToast, List, ListItem,  ListIcon
 } from '@chakra-ui/react';
+//Importar iconos de Chakra
+import { UnlockIcon, AtSignIcon } from "@chakra-ui/icons"
 
 // Import Icons
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -115,11 +117,12 @@ const Login = () => {
           rounded={'xl'}
           boxShadow="2xl"
           p={{ base: 4, sm: 6, md: 8 }}
+          pt={{ base: 2, sm: 4, md: 6 }}
           mt={{ base: 0, sm: 0, lg: 0 }}
           spacing={{ base: 8 }}
           display="inline-block"
           maxW={{ lg: 'lg' }}>
-          <Stack spacing={4}>
+          <Stack spacing={2}>
             <Heading
               color={'gray.800'}
               lineHeight={1.1}
@@ -140,11 +143,11 @@ const Login = () => {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4} >
-              <FormControl isInvalid={errors.username} isRequired mt={1}>
+              <FormControl isInvalid={errors.username} isRequired mt={0}>
 
                 <Input
                   placeholder="Username"
-                  bg={'gray.100'}
+                  bg={'gray.200'}
                   border={0}
                   color={'gray.500'}
                   _placeholder={{
@@ -159,22 +162,36 @@ const Login = () => {
               </FormControl>
               <FormControl isInvalid={errors.password} isRequired mb={10}>
                 <InputGroup>
-                  <Input colorScheme="yellow" placeholder="*********" variant="filled"
+                  <Input colorScheme="yellow"  bg={'gray.200'} placeholder="*********" variant="filled"
                     type={show ? "text" : "password"}
                     {...register("password", {
                       required: "Este campo es obligatorio",
                     })}
                   />
                   <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                    <Button h="1.75rem"  bg={'gray.200'}size="sm" onClick={handleClick}
+                    _hover={{
+                      bg: 'gray.300',
+                      
+                  }}>
                       {show ? <FaEyeSlash /> : <FaEye />}
+                      
                     </Button>
                   </InputRightElement>
                 </InputGroup>
                 <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
               </FormControl>
-              <Text>Username: johnsmith</Text>
-              <Text>Contraseña: 1234</Text>
+              <List spacing={2}>
+              <ListItem>
+                <ListIcon as={AtSignIcon} color="green.500" />
+                <strong>Username: </strong>johnsmith
+              </ListItem> 
+              <ListItem>
+                <ListIcon as={UnlockIcon} color="green.500" />
+                <strong>Contraseña: </strong>1234
+              </ListItem>  
+            </List>
+              
               <Button isLoading={isSubmitting} width="100%" type="submit" py={5} borderRadius="full" bg="#F2B705" colorScheme="yellow">
                 Login
               </Button>
