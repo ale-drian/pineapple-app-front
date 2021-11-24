@@ -79,7 +79,7 @@ const MemberCard = ({ member, image}) => {
         <Center py={4}>
             <Box maxW={'320px'} minW={'280px'} w={'auto'} bg={useColorModeValue('white', 'gray.900')} boxShadow={'xl'} rounded={'lg'} p={4} textAlign={'center'}>
                 <Avatar size={'2xl'} src={image} alt={'Avatar Alt'} mb={4} pos={'relative'} />
-                <Avatar size={'sm'} src={member.country == 'PE' ? pe : ar} position={'relative'} top={0} />
+                <Avatar size={'sm'} src={member.country == 'PE' ? pe : ar} position={'relative'} top={0} right={8} border="white"/>
                 <Heading fontSize={'xl'} fontFamily={'body'}>
                     {member.name}
                 </Heading>
