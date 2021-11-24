@@ -1,22 +1,16 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+import { Outlet } from 'react-router';
+import { useAuthContext } from '../../../App';
+
 import {
-    Box,
-    useColorModeValue,
-    Drawer,
-    DrawerContent,
-    useDisclosure
+    Box, useColorModeValue, useDisclosure
 } from '@chakra-ui/react';
 import {
-    FaHome,
-    FaUserFriends,
-    FaBoxOpen
+    FaHome, FaUserFriends, FaBoxOpen
 } from 'react-icons/fa';
 
-
-import { Outlet } from 'react-router';
 import Sidebar from './SidebarComponent';
 import Header from './HeaderComponent';
-import { useAuthContext } from '../../../App';
 
 //LAYOUT COMPLETO DE DASHBOARD
 const Layout = () => {

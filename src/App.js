@@ -12,7 +12,6 @@ import Login from './components/LoginComponent';
 import Forgot from './components/ForgotComponent';
 import Home from './components/HomeComponent';
 import Dashboard from './components/dashboard/DashboardComponent';
-import Category from './components/dashboard/CategoryComponent';
 import Product from './components/dashboard/ProductComponent';
 import User from './components/dashboard/UserComponent';
 import Layout from './components/layout/dashboard/LayoutComponent';

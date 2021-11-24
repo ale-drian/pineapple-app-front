@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import UserService from "../../services/UserService";
-import Layout from '../layout/dashboard/LayoutComponent';
 import {
     Button, Lorem, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormErrorMessage, FormLabel, FormControl, Input, SimpleGrid, Box, Select, Table, Th, Tr, Td, Tfoot, Thead, Tbody, Badge, Stack, Flex, Text, InputRightElement, InputGroup, 
     AlertDialog,
