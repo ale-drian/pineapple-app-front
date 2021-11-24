@@ -140,10 +140,10 @@ const Home = () => {
                     <Center>
                         <Stack direction={["column", "row"]} spacing="20px">
 
-                            <Link href="https://github.com/ale-drian/pineapple-app-front" isExternal h="48px">
+                            <Link href="https://ppap-app.herokuapp.com/" isExternal h="48px">
                                 <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > Heroku App </Button>
                             </Link>
-                            <Link href="https://github.com/luciapaulinapereyra/pineapple-app-back" isExternal h="48px">
+                            <Link href="https://ppap-app-api.herokuapp.com/api/" isExternal h="48px">
                                 <Button leftIcon={<GrHeroku />} fontSize="xl" color="white" backgroundColor="#2e3339" _hover={{ bgColor: "black" }} mx={2} > Heroku API </Button>
                             </Link>
                         </Stack>
